@@ -28,9 +28,9 @@ export default function RootLayout({
           <div className="hidden md:flex max-h-full w-64 flex-col border-r px-3 pb-3">
             <Sidebar/>
           </div>
-          <ScrollArea className="flex-1 w-full flex flex-col">
+          <div className="w-full max-h-full">
             {children}  
-          </ScrollArea>
+          </div>
           
         
         </div>

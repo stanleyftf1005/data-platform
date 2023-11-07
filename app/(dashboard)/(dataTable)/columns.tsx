@@ -31,7 +31,7 @@ export const columns: ColumnDef<Records>[] = [
     cell: ({ row }) => {
       const status:string = row.getValue("status")
  
-      return <div className="py-1 px-3 inline rounded-full font-normal text-sm text-center bg-zinc-200">{status}</div>
+      return <div className="py-1 px-3 inline rounded-md font-normal text-sm text-center bg-zinc-200">{status}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))

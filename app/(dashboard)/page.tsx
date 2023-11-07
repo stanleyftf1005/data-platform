@@ -15,9 +15,11 @@ export default function Page() {
 
   
   return (
-    <Margin>
-      <DataTable columns={columns} data={data} /> 
-    </Margin>
+    <ScrollArea className="h-full">
+      <Margin>
+        <DataTable columns={columns} data={data} /> 
+      </Margin>
+    </ScrollArea>
     
     /*
     <ScrollArea className="w-full flex flex-col">

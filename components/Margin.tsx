@@ -1,10 +1,11 @@
 'use client'
+import {cn} from '@/lib/utils'
 
 export function Margin (
-    {children}: {children: React.ReactNode}
+    {children, className}: {children: React.ReactNode, className?: string}
 ) {
   return (
-    <div className="m-6">
+    <div className={cn("m-4",className? className:"")}>
         {children}
     </div>
     

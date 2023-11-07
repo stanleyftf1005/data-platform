@@ -6,11 +6,12 @@ interface ButtonWithIconProps {
     label: string;
     className?: string;
     icon: IconType;
+    variant?: string;
 }
 
-export function ButtonWithIcon({ label, icon: Icon, className}: ButtonWithIconProps) {
+export function ButtonWithIcon({ label, icon: Icon, className, variant}: ButtonWithIconProps) {
   return (
-    <Button className={cn('', className)}>
+    <Button className={cn('', className)} variant={variant}>
       <Icon className="mr-2 h-4 w-4" /> {label}
     </Button>
   )
