@@ -4,7 +4,8 @@ import { Figtree } from 'next/font/google'
 import '../globals.css'
 import Sidebar from '@/components/Sidebar'
 import {cn} from '@/lib/utils'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { Toaster } from '@/components/ui/toaster'
+
 
 
 //const inter = Inter({ subsets: ['latin'] })
@@ -34,6 +35,7 @@ export default function RootLayout({
           
         
         </div>
+        <Toaster/>
         
         </body>
     </html>

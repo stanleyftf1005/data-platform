@@ -13,7 +13,7 @@ interface RawTextViewerProps {
 
 export default function RawTextViewer({sample}: RawTextViewerProps) {
     return(
-        <div className="w-3/5 flex-auto flex flex-col">
+        <div className="w-1/2 flex-auto flex flex-col">
             <Margin className="h-full flex flex-col">
                 <div className="flex mb-4 justify-between">
                     <div>
