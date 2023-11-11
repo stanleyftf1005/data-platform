@@ -4,6 +4,7 @@ import {LuTable2, LuUser2, LuFileEdit,LuSettings} from "react-icons/lu"
 import Sidebarbutton from "./Sidebarbutton"
 import { useMemo } from 'react'
 import { usePathname } from "next/navigation"
+import { UserButton } from "@clerk/nextjs";
 
 
 export default function Sidebar() {
@@ -22,12 +23,6 @@ export default function Sidebar() {
       icon: LuFileEdit,
       href: '/annotations',
       active: pathname === '/annotations',
-    },
-    {
-      label: 'Members',
-      icon: LuUser2,
-      href: '/members',
-      active: pathname === '/members',
     },
     /*{
       label: 'Settings',
@@ -61,7 +56,7 @@ export default function Sidebar() {
         </div>
       </div>
       <div className="w-full bg-gray-100 rounded-lg h-16 mb-4">
-        
+        <UserButton afterSignOutUrl="/"/>
       </div>
     </>
       

@@ -33,7 +33,6 @@ export default function Page() {
                     
                     <Margin className="min-h-[400px] flex flex-col">
                         <StepsForm/>
-                        
 
                     </Margin>
                 </ScrollArea>
