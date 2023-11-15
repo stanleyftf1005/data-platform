@@ -5,7 +5,7 @@ import {Margin} from '@/components/Margin';
 import {ButtonWithIcon} from '@/components/ButtonWithIcon';
 import Link from 'next/link';
 import {LuArrowUpRight} from 'react-icons/lu';
-import {data} from '../../data';
+import {data} from '../../../data';
 
 interface RawTextViewerProps {
     sample: string[];

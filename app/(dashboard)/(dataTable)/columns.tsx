@@ -2,6 +2,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {LuMoreHorizontal} from 'react-icons/lu'
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,19 +13,30 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-
+export type steps = {
+  index: number,
+  actionType: string
+  actionProps: string
+}
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Records = {
+export type Reaction = {
   id: string
+  rxID: string
   url: string
-  status: "pending" | "processed" | "approved" | "rejected"
+  status: String,
+  imageUrl: string,
+  createdAt: string,
+  updatedAt: string,
+  annotation: string[],
+  steps: steps[],
+
 }
 
 
 
-export const columns: ColumnDef<Records>[] = [
+export const columns: ColumnDef<Reaction>[] = [
   {
     accessorKey: "status",
     header: "Status",
@@ -36,14 +48,16 @@ export const columns: ColumnDef<Records>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))
     },
+
   },
   {
     accessorKey: "url",
     header: "URL",
   },
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "rxID",
+    header: "rxID",
+    
   },
   {
     id: "actions",
@@ -78,6 +92,20 @@ export const columns: ColumnDef<Records>[] = [
       )
     },
   },
+  {
+    id: "link",
+    cell: ({ row }) => {
+ 
+      return (
+        <Link href={`/annotations/${row.original.id}`}>
+          <Button variant="outline" className="text-sm">
+            View Record
+          </Button>
+        </Link>
+      )
+    },
+  },
+  
 
   
 

@@ -15,9 +15,10 @@ import proptable from "@/public/property-table.png"
 
 interface DialogDemoProps {
   label: string
+  annotation?: string[]
 }
 
-export function DialogDemo({label}: DialogDemoProps) {
+export function DialogDemo({label, annotation}: DialogDemoProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -31,7 +32,13 @@ export function DialogDemo({label}: DialogDemoProps) {
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <Image src={proptable} alt="" width={1000}/>
+          {annotation?.map((item, index) => {
+            return (
+              <div key={index}>
+                {item}
+              </div>
+            )
+          })}
         </div>
         <DialogFooter>
           <Button type="submit">Save changes</Button>

@@ -1,23 +1,45 @@
 import {ButtonWithIcon} from '@/components/ButtonWithIcon'
 import { LuDownload } from "react-icons/lu"
-import { Records, columns } from './(dataTable)/columns';
+import { Reaction, columns, steps} from './(dataTable)/columns';
 import { DataTable } from './(dataTable)/data-table';
 import { data } from './data';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {Margin} from "@/components/Margin"
+import prisma from "@/lib/prismadb";
 
 
 
-export default function Page() {
-  const total = 3000;
-  const annotated = 500;
-  const unannotated = total - annotated;
+
+
+export default async function Page() {
+  const db_data = await prisma.reaction.findMany({
+    orderBy: [
+      {
+        createdAt: 'desc'
+      }
+    ]
+  });
+
+  const formattedData: Reaction[] = db_data.map((data) => ({
+    id: data.id,
+    imageURL: data.imageURL,
+    rxID: data.rxID,
+    url: data.url,
+    status: data.status,
+    rawText: data.rawText,
+    steps: data.steps as steps[],
+    annotation: data.annotation,
+    createdAt: data.createdAt.toISOString(),
+    updatedAt: data.updatedAt.toISOString(),
+  }));
+
+  
 
   
   return (
     <ScrollArea className="h-full">
       <Margin>
-        <DataTable columns={columns} data={data} /> 
+        <DataTable columns={columns} data={formattedData} />
       </Margin>
     </ScrollArea>
     

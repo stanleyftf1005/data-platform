@@ -1,6 +1,10 @@
 "use client"
 
 import {useEffect, useState} from 'react'
+import { useRouter } from 'next/navigation';
+import axios from 'axios'
+import { AxiosResponse, AxiosError } from 'axios';
+import {data, rawText} from '../../../data'
 import { LuPlus, LuTrash2, LuCheck, LuChevronsUpDown } from "react-icons/lu"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
@@ -22,6 +26,24 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { toast } from "@/components/ui/use-toast"
+import { Reaction, steps } from '@/app/(dashboard)/(dataTable)/columns';
+import { SafeReaction } from '@/app/types';
+
+const {id, url, status } = data[2]
+
+
+
+const createAnnotationText = (data: steps[]) => {
+
+    return data.map((step) => `(#${step.index}) ${step.actionType} ${step.actionProps}`) as string[]
+}
+
+const createFields = (data:steps[]) => {
+    return {
+        steps: data,
+        annotation: createAnnotationText(data)
+    }
+}
 
 
 const formSchema = z.object({
@@ -125,11 +147,17 @@ const formSchema = z.object({
 
       ]
 
-const useDynamicForm = () => {
+
+
+const useDynamicForm = (reaction: SafeReaction | undefined) => {
+    
+    
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         //defaultValues will be autopopulated into fields
-        defaultValues: {
+        
+        defaultValues: reaction && formSchema.parse({ steps: reaction.steps }) || {
             steps: [
                 {
                     //actionType: "",
@@ -147,18 +175,43 @@ const useDynamicForm = () => {
                 }
             ]
         },
+        
     
     })
 
+    const router = useRouter()
+
     const onSubmit = (data: z.infer<typeof formSchema>) => {
-        toast({
-            title: "You submitted the following values:",
-            description: (
-            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-            </pre>
-            ),
+        
+
+        axios.patch(`/api/annotations/${reaction?.id}`, createFields(data.steps))
+        .then((res: AxiosResponse) => {
+            toast({
+                title: "You submitted the following values:",
+                description: (
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">{JSON.stringify(res.data, null, 2)}</code>
+                    </pre>
+                ),
+            })
+            router.refresh()
+            
         })
+        .catch((err: AxiosError) => {
+            console.error(err);
+            toast({
+                title: "An error occurred while submitting the form:",
+                description: (
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                        <code className="text-white">{JSON.stringify(err.response?.data, null, 2)}</code>
+                    </pre>
+                )
+            })
+        })
+            
+
+        
+        
     }
 
     const {fields, append, remove} = useFieldArray({
@@ -171,6 +224,9 @@ const useDynamicForm = () => {
             form.setValue(`steps.${index}.index`, index+1)
         })
     }
+
+    
+    
 
     const handleDelete = (index: number) => {
         remove(index)
@@ -191,14 +247,20 @@ const useDynamicForm = () => {
 
 
 
-export default function StepsForm() {
+interface StepsFormProps {
+    reaction: SafeReaction | undefined
+}
+
+export default function StepsForm({reaction}: StepsFormProps) {
     const [toggle, setToggle] = useState(false)
     /*const [steps, setSteps] = useState([
         {id: 1,
         actions: ''}
     ])*/
 
-    const {form, fields, handleDelete, handleAppend, updateFieldIndex, onSubmit} = useDynamicForm()
+    const {form, fields, handleDelete, handleAppend, updateFieldIndex, onSubmit} = useDynamicForm(reaction)
+
+    
 
     
    /* const onClick = () => {
@@ -206,6 +268,7 @@ export default function StepsForm() {
     }*/
 
     useEffect(() => {
+        
         if (fields.length > 0) {
             if(toggle === false){
                 setToggle(true)
