@@ -13,26 +13,32 @@ import {SafeReaction} from "@/app/types";
 
 
 export default async function Page() {
-  const db_data = await prisma.reaction.findMany({
-    orderBy: [
-      {
-        createdAt: 'desc'
-      }
-    ]
-  });
+  
 
-  const formattedData: SafeReaction[] = db_data.map((data) => ({
-    id: data.id,
-    imageURL: data.imageURL,
-    rxID: data.rxID,
-    url: data.url,
-    status: data.status,
-    rawText: data.rawText,
-    steps: data.steps as steps[],
-    annotation: data.annotation,
-    createdAt: data.createdAt.toISOString(),
-    updatedAt: data.updatedAt.toISOString(),
-  }));
+  const db_data = await prisma.reaction.findMany({
+      orderBy: [
+        {
+          createdAt: 'desc'
+        }
+      ]
+  })
+
+  
+
+    const formattedData = db_data.map((data) => ({
+      id: data.id,
+      imageURL: data.imageURL,
+      rxID: data.rxID,
+      url: data.url,
+      status: data.status,
+      rawText: data.rawText,
+      steps: data.steps as steps[],
+      annotation: data.annotation,
+      createdAt: data.createdAt.toISOString(),
+      updatedAt: data.updatedAt.toISOString(),
+    }));
+ 
+  
 
   
 
