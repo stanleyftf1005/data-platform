@@ -8,10 +8,11 @@ import {LuArrowUpRight} from 'react-icons/lu';
 import {data} from '../../../data';
 
 interface RawTextViewerProps {
-    sample: string[];
+    rawText: string|undefined;
+    url: string;
 }
 
-export default function RawTextViewer({sample}: RawTextViewerProps) {
+export default function RawTextViewer({rawText, url}: RawTextViewerProps) {
     return(
         <div className="w-1/2 flex-auto flex flex-col">
             <Margin className="h-full flex flex-col">
@@ -20,13 +21,13 @@ export default function RawTextViewer({sample}: RawTextViewerProps) {
                         <div className="text-base font-semibold">Raw Data</div>
                         <div className="text-sm text-neutral-500">The original procedure text is shown below</div>
                     </div>
-                    <Link href={data[0].url} target="_blank">
+                    <Link href={url} target="_blank">
                         <ButtonWithIcon label="View Original" icon={LuArrowUpRight} className="text-sm rounded-xl h-10"></ButtonWithIcon>
                     </Link>
                         
                 </div>
                 <ScrollArea className="border w-full max-h-[520px] rounded-md px-3 py-2 text-base shadow-sm">
-                    <p>{sample[0]}</p>
+                    <p>{rawText}</p>
                 </ScrollArea>
                 
             </Margin>

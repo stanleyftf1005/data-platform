@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {SafeReaction} from "@/app/types";
 
 
 export type steps = {
@@ -24,7 +25,7 @@ export type steps = {
 export type Reaction = {
   id: string
   rxID: string
-  url: string
+  url: string,
   status: String,
   imageUrl: string,
   createdAt: string,
@@ -36,7 +37,7 @@ export type Reaction = {
 
 
 
-export const columns: ColumnDef<Reaction>[] = [
+export const columns: ColumnDef<SafeReaction>[] = [
   {
     accessorKey: "status",
     header: "Status",

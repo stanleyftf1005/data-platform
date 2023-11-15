@@ -1,6 +1,5 @@
 import { Margin } from '@/components/Margin';
 import {ScrollArea} from '@/components/ui/scroll-area';
-import {sample} from './_text';
 import{data} from '../../data';
 import RawTextViewer from './(components)/RawTextViewer';
 import StepsForm from './(components)/StepsForm';
@@ -45,7 +44,7 @@ export default async function Page({params}: {params: IParams}) {
 
                     </Margin>
                 </ScrollArea>
-                <RawTextViewer sample={sample}/>
+                <RawTextViewer rawText={reaction?.rawText} url={reaction?.url as string}/>
             </div>
         
 

@@ -6,6 +6,7 @@ import { data } from './data';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {Margin} from "@/components/Margin"
 import prisma from "@/lib/prismadb";
+import {SafeReaction} from "@/app/types";
 
 
 
@@ -20,7 +21,7 @@ export default async function Page() {
     ]
   });
 
-  const formattedData: Reaction[] = db_data.map((data) => ({
+  const formattedData: SafeReaction[] = db_data.map((data) => ({
     id: data.id,
     imageURL: data.imageURL,
     rxID: data.rxID,

@@ -179,6 +179,9 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
     
     })
 
+    //Q: how to update a remote main branch on github with my local master branch. Error: fatal: 'orign' does not appear to be a git repository fatal: Could not read from remote repository.
+    //A:
+
     const router = useRouter()
 
     const onSubmit = (data: z.infer<typeof formSchema>) => {
@@ -281,7 +284,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
         }
 
 
-    }, [fields,form]);
+    }, [fields,form, toggle, updateFieldIndex]);
 
     
 

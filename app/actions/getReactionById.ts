@@ -21,6 +21,7 @@ export default async function getReactionById(
         if(reaction){
             return {
                 ...reaction,
+                url : reaction.url as string,
                 steps: reaction.steps as steps[],
                 createdAt : reaction.createdAt.toISOString(),
                 updatedAt : reaction.updatedAt.toISOString()
