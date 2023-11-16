@@ -11,11 +11,12 @@ export default function Layout({
   children: React.ReactNode
 }) {
 
+  /*
   const {userId} = auth()
 
   if(!userId) {
     return redirect('/')
-  }
+  }*/
 
   return (
     <>
