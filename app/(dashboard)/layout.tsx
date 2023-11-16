@@ -1,5 +1,7 @@
 import Sidebar from '@/components/Sidebar'
 import { Toaster } from '@/components/ui/toaster'
+import {auth} from "@clerk/nextjs"
+import { redirect } from 'next/navigation'
 
 
 
@@ -8,6 +10,13 @@ export default function Layout({
 }: {
   children: React.ReactNode
 }) {
+
+  const {userId} = auth()
+
+  if(!userId) {
+    return redirect('/')
+  }
+
   return (
     <>
       <div className="h-full w-full relative flex">
