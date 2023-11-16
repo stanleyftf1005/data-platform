@@ -56,7 +56,7 @@ export default function Sidebar() {
         </div>
       </div>
       <div className="w-full bg-gray-100 rounded-lg h-16 mb-4">
-        <UserButton afterSignOutUrl="/"/>
+        {/*<UserButton afterSignOutUrl="/"/>*/}
       </div>
     </>
       
