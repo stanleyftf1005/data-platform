@@ -22,14 +22,14 @@ export default function RootLayout({
 }) {
   return (
 
-    <ClerkProvider>
+    //<ClerkProvider>
 
-      <html lang="en">
-        <body className={cn(figtree.className, 'overflow-hidden')}>
-          {children}
-          
-          </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={cn(figtree.className, 'overflow-hidden')}>
+        {children}
+        
+        </body>
+    </html>
+    //</ClerkProvider>
   )
 }
