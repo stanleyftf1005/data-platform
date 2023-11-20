@@ -5,11 +5,14 @@ import Sidebarbutton from "./Sidebarbutton"
 import { useMemo } from 'react'
 import { usePathname } from "next/navigation"
 import { UserButton } from "@clerk/nextjs";
+import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 
 
 export default function Sidebar() {
   
   const pathname = usePathname()
+  const {isAuthenticated} = useKindeBrowserClient();
 
   const route = useMemo(() => [
     {
@@ -55,8 +58,18 @@ export default function Sidebar() {
           <Sidebarbutton label="Settings" icon={LuSettings}/>*/}
         </div>
       </div>
-      <div className="w-full bg-gray-100 rounded-lg h-16 mb-4">
-        {/*<UserButton afterSignOutUrl="/"/>*/}
+      <div className="w-full bg-gray-100 rounded-lg mb-4">
+        
+
+        <div className="flex flex-col space-y-2 m-4">
+          
+
+          {isAuthenticated && (
+            <LogoutLink>Logout</LogoutLink>
+          )}
+          
+        </div>
+        
       </div>
     </>
       

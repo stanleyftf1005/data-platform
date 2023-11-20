@@ -4,6 +4,8 @@ import { Figtree } from 'next/font/google'
 import './globals.css'
 import {cn} from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from 'next/navigation'
 
 
 
@@ -15,12 +17,19 @@ export const metadata: Metadata = {
   description: 'Annotation tool',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
+  const { isAuthenticated } = getKindeServerSession();
+
+  if(!(await isAuthenticated())) {
+    redirect('/api/auth/login')
+  }
+  
+  return ( 
+    
 
     //<ClerkProvider>
 
