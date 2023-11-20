@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation"
 import { UserButton } from "@clerk/nextjs";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
+import { Button } from "@/components/ui/button";
 
 
 export default function Sidebar() {
@@ -61,14 +62,18 @@ export default function Sidebar() {
       <div className="w-full bg-gray-100 rounded-lg mb-4">
         
 
-        <div className="flex flex-col space-y-2 m-4">
+        
           
 
           {isAuthenticated && (
-            <LogoutLink>Logout</LogoutLink>
+            <LogoutLink>
+              <Button variant="outline" className="w-full">
+                Logout
+              </Button>
+            </LogoutLink>
           )}
           
-        </div>
+        
         
       </div>
     </>
