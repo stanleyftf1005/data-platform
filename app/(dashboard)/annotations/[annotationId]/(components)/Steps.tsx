@@ -11,6 +11,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { actionTypes } from './StepsForm'
+import { flushAllTraces } from 'next/dist/trace'
 
 interface StepsProps {
     key: string;
@@ -33,6 +34,7 @@ const Steps = ({key, index, handleDelete, form}:StepsProps) => {
     const handleEdit = () => {
         setCanEdit(!canEdit)
     }
+
 
   
     return (

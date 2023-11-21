@@ -43,10 +43,10 @@ export default async function Page({params}: {params: IParams}) {
                     </div>
                     */}
                     
-                    <Margin className="min-h-[400px] flex flex-col">
+                    <Margin className="min-h-[400px] flex flex-col m-0">
                         <StepsForm reaction={reaction}/>
 
-                    </Margin>s
+                    </Margin>
                 </ScrollArea>
                 <RawTextViewer rawText={reaction?.rawText} url={reaction?.url as string}/>
             </div>

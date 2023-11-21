@@ -240,7 +240,11 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
         });
     };
 
-    return {form , fields, isLoading, handleDelete, updateFieldIndex,handleAppend, onSubmit}
+    const externalClick = () => {
+        onSubmit(form.getValues())
+    }
+
+    return {form , fields, isLoading, handleDelete,  updateFieldIndex, externalClick, handleAppend, onSubmit}
 
 
 }
@@ -258,7 +262,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
         actions: ''}
     ])*/
 
-    const {form, fields, isLoading, handleDelete, handleAppend, updateFieldIndex, onSubmit} = useDynamicForm(reaction)
+    const {form, fields, isLoading, handleDelete, handleAppend, updateFieldIndex, externalClick, onSubmit} = useDynamicForm(reaction)
 
 
     
@@ -287,22 +291,28 @@ export default function StepsForm({reaction}: StepsFormProps) {
 
     return(
         <>  
-            {toggle &&
-
-            
-            <>
-                <div className="flex justify-between align-middle mb-6 ">
+            <div className="flex justify-between align-middle mb-6 px-4 py-4 border-b sticky top-0 z-10 bg-white">
                     <div className="flex flex-col max-w-[70%]">
                         <h3 className="text-base font-semibold">Reaction Procedure</h3>
                         <p className="text-xs font-medium text-neutral-500">Last Edited: <span className='underline underline-offset-1'>{reaction?.updatedAt}</span></p>
                     </div>
                     
-                    <Button variant='outline' className="text-sm rounded-xl h-10 border-input" onClick={()=>handleAppend()}>
-                        <LuPlus className="mr-2 h-4 w-4" /> Add Step
-                    </Button>
+                    <div className="flex space-x-2">
+                        <Button className="text-sm rounded-xl h-10" type="submit" disabled={isLoading} onClick={()=> externalClick()}>
+                            Submit {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
+                        </Button>
+                        <Button variant='outline' className="text-sm rounded-xl h-10 border-input" onClick={()=>handleAppend()}>
+                            <LuPlus className="mr-2 h-4 w-4" /> Add Step
+                        </Button>
+                    </div>
                 </div>
 
-                <div className="flex flex-col space-y-4 mb-32">
+            {toggle &&
+
+            
+            <>
+
+                <div className="flex flex-col space-y-4 px-4 mb-24">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             {fields.map(({id}, index) => (
@@ -310,10 +320,11 @@ export default function StepsForm({reaction}: StepsFormProps) {
                                 <Steps index={index} form={form} handleDelete={handleDelete} key={id}/>
                             
                             ))}
+                            {/*}
                             <Button type="submit" disabled={isLoading} >
                                 Submit {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
                             </Button>
-
+                            */}
                             
                         </form>
                     </Form>
