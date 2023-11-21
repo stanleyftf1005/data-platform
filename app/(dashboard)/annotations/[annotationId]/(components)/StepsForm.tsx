@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios'
 import { AxiosResponse, AxiosError } from 'axios';
 import {data, rawText} from '../../../data'
-import { LuPlus, LuTrash2, LuCheck, LuChevronsUpDown } from "react-icons/lu"
+import { LuPlus, LuTrash2, LuCheck, LuChevronsUpDown, LuLoader2 } from "react-icons/lu"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command"
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
 import {ScrollArea} from "@/components/ui/scroll-area"
@@ -151,7 +151,7 @@ const formSchema = z.object({
 
 const useDynamicForm = (reaction: SafeReaction | undefined) => {
     
-    
+    const [isLoading, setIsLoading] = useState(false)
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -174,17 +174,16 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
     
     })
 
-    const {isSubmitting} = form.formState
 
     //Q: how to update a remote main branch on github with my local master branch. Error: fatal: 'orign' does not appear to be a git repository fatal: Could not read from remote repository.
     //A:
 
     const router = useRouter()
 
-    const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const onSubmit = async (data: z.infer<typeof formSchema>) => {
         
-        
-        axios.patch(`/api/annotations/${reaction?.id}`, createFields(data.steps))
+        setIsLoading(true)
+        await axios.patch(`/api/annotations/${reaction?.id}`, createFields(data.steps))
         .then((res: AxiosResponse) => {
             toast({
                 title: "You submitted the following values:",
@@ -208,6 +207,7 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
                 )
             })
         })
+        setIsLoading(false)
             
 
         
@@ -240,7 +240,7 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
         });
     };
 
-    return {form , fields, isSubmitting, handleDelete, updateFieldIndex,handleAppend, onSubmit}
+    return {form , fields, isLoading, handleDelete, updateFieldIndex,handleAppend, onSubmit}
 
 
 }
@@ -258,9 +258,8 @@ export default function StepsForm({reaction}: StepsFormProps) {
         actions: ''}
     ])*/
 
-    const {form, fields, isSubmitting, handleDelete, handleAppend, updateFieldIndex, onSubmit} = useDynamicForm(reaction)
+    const {form, fields, isLoading, handleDelete, handleAppend, updateFieldIndex, onSubmit} = useDynamicForm(reaction)
 
-    
 
     
    /* const onClick = () => {
@@ -311,7 +310,9 @@ export default function StepsForm({reaction}: StepsFormProps) {
                                 <Steps index={index} form={form} handleDelete={handleDelete} key={id}/>
                             
                             ))}
-                            <Button disabled={isSubmitting} type="submit">Submit</Button>
+                            <Button type="submit" disabled={isLoading} >
+                                Submit {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
+                            </Button>
 
                             
                         </form>
