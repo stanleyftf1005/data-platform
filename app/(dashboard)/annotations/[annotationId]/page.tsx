@@ -5,6 +5,7 @@ import RawTextViewer from './(components)/RawTextViewer';
 import StepsForm from './(components)/StepsForm';
 import {DialogDemo} from './(components)/DialogDemo';
 import getReactionById from '@/app/actions/getReactionById';
+import LoadingUI from '@/components/LoadingUI';
 
 interface IParams {
     annotationId: string
@@ -24,25 +25,28 @@ export default async function Page({params}: {params: IParams}) {
                 <h3 className="text-lg font-semibold">{reaction?.rxID}</h3>
                 
                 
+                
             </div> 
             <div className="flex w-full h-full">
                 <ScrollArea className="w-1/2 border-r h-full relative">
+                    {/*
                     <div className="py-4 border-b sticky top-0 bg-white z-10 flex justify-between items-center"> 
                         <div className="">
                             <div className="text-base mx-4 font-semibold">Annotations</div>
                             <div className="text-sm mx-4 text-neutral-500">Annotations are used to train the model</div>
                         </div>
                         <div className="mr-4">
-                            <DialogDemo label="View Rules" annotation={reaction?.annotation}/>
+                            <DialogDemo label="View Annotation" annotation={reaction?.annotation}/>
                         </div>
                         
         
                     </div>
+                    */}
                     
                     <Margin className="min-h-[400px] flex flex-col">
                         <StepsForm reaction={reaction}/>
 
-                    </Margin>
+                    </Margin>s
                 </ScrollArea>
                 <RawTextViewer rawText={reaction?.rawText} url={reaction?.url as string}/>
             </div>

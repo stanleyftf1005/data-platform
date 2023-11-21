@@ -6,6 +6,7 @@ import {ButtonWithIcon} from '@/components/ButtonWithIcon';
 import Link from 'next/link';
 import {LuArrowUpRight} from 'react-icons/lu';
 import {data} from '../../../data';
+import LoadingUI from '@/components/LoadingUI';
 
 interface RawTextViewerProps {
     rawText: string|undefined;
@@ -26,8 +27,11 @@ export default function RawTextViewer({rawText, url}: RawTextViewerProps) {
                     </Link>
                         
                 </div>
+
                 <ScrollArea className="border w-full max-h-[520px] rounded-md px-3 py-2 text-base shadow-sm">
-                    <p>{rawText}</p>
+                    <LoadingUI height="full" width="[full]">
+                        <p>{rawText}</p>
+                    </LoadingUI>
                 </ScrollArea>
                 
             </Margin>

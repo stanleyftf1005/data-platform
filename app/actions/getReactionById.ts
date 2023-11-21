@@ -23,8 +23,8 @@ export default async function getReactionById(
                 ...reaction,
                 url : reaction.url as string,
                 steps: reaction.steps as steps[],
-                createdAt : reaction.createdAt.toISOString(),
-                updatedAt : reaction.updatedAt.toISOString()
+                createdAt : reaction.createdAt.toLocaleString(),
+                updatedAt : reaction.updatedAt.toLocaleString()
             } as SafeReaction
         }
         

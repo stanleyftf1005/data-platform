@@ -10,7 +10,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
+import LoadingUI from "@/components/LoadingUI"
+
 import {SafeReaction} from "@/app/types";
 
 
@@ -54,6 +56,7 @@ export const columns: ColumnDef<SafeReaction>[] = [
   {
     accessorKey: "url",
     header: "URL",
+    
   },
   {
     accessorKey: "rxID",

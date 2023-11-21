@@ -54,6 +54,7 @@ export default async function Page() {
     <ScrollArea className="h-full">
       <Margin>
         <DataTable columns={columns} data={formattedData} />
+
       </Margin>
     </ScrollArea>
     
