@@ -156,6 +156,7 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: "onChange",
+        reValidateMode: "onSubmit",
         //defaultValues will be autopopulated into fields
         
         defaultValues: reaction && formSchema.parse({ steps: reaction.steps }) || {
@@ -173,6 +174,11 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
         
     
     })
+
+    const {reset} = form
+
+
+    
 
 
     //Q: how to update a remote main branch on github with my local master branch. Error: fatal: 'orign' does not appear to be a git repository fatal: Could not read from remote repository.
@@ -193,7 +199,11 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
                     </pre>
                 ),
             })
+            reset({
+                steps: res.data.steps
+            })
             router.refresh()
+            
             
         })
         .catch((err: AxiosError) => {
@@ -208,7 +218,7 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
             })
         })
         setIsLoading(false)
-            
+        
 
         
         
@@ -242,9 +252,13 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
 
     const externalClick = () => {
         onSubmit(form.getValues())
+        
     }
 
-    return {form , fields, isLoading, handleDelete,  updateFieldIndex, externalClick, handleAppend, onSubmit}
+    const {isDirty, isSubmitSuccessful} = form.formState
+
+
+    return {form , fields, isLoading, handleDelete,  updateFieldIndex, reset, isDirty, isSubmitSuccessful, externalClick, handleAppend, onSubmit}
 
 
 }
@@ -257,12 +271,13 @@ interface StepsFormProps {
 
 export default function StepsForm({reaction}: StepsFormProps) {
     const [toggle, setToggle] = useState(false)
+    const [updated, setUpdated] = useState(false)
     /*const [steps, setSteps] = useState([
         {id: 1,
         actions: ''}
     ])*/
 
-    const {form, fields, isLoading, handleDelete, handleAppend, updateFieldIndex, externalClick, onSubmit} = useDynamicForm(reaction)
+    const {form, fields, isLoading, isDirty, isSubmitSuccessful, reset, handleDelete, handleAppend, updateFieldIndex, externalClick, onSubmit} = useDynamicForm(reaction)
 
 
     
@@ -272,6 +287,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
 
     useEffect(() => {
         
+
         if (fields.length > 0) {
             if(toggle === false){
                 setToggle(true)
@@ -283,8 +299,17 @@ export default function StepsForm({reaction}: StepsFormProps) {
             setToggle(false)
         }
 
+        if(isDirty){
+            setUpdated(isDirty)
+        }
 
-    }, [fields,form, toggle, updateFieldIndex]);
+
+
+        
+
+        
+
+    }, [fields,form, toggle, updateFieldIndex, isDirty]);
 
     
 
@@ -298,9 +323,10 @@ export default function StepsForm({reaction}: StepsFormProps) {
                     </div>
                     
                     <div className="flex space-x-2">
+                        {isDirty && (
                         <Button className="text-sm rounded-xl h-10" type="submit" disabled={isLoading} onClick={()=> externalClick()}>
-                            Submit {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
-                        </Button>
+                            Save Changes {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
+                        </Button>)}
                         <Button variant='outline' className="text-sm rounded-xl h-10 border-input" onClick={()=>handleAppend()}>
                             <LuPlus className="mr-2 h-4 w-4" /> Add Step
                         </Button>

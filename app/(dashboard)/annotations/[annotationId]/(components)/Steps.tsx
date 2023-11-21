@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { Button } from '@/components/ui/button'
 import { CiBeaker1 } from 'react-icons/ci'
 import { LuTrash2, LuPencil } from 'react-icons/lu'
@@ -29,13 +29,11 @@ interface StepsProps {
 }
 
 const Steps = ({key, index, handleDelete, form}:StepsProps) => {
-    const [canEdit, setCanEdit] = useState(false)
+    const [canEdit, setCanEdit] = useState<boolean>(false)
 
     const handleEdit = () => {
         setCanEdit(!canEdit)
     }
-
-
   
     return (
     <div key={key} className="flex flex-col space-y-3">
