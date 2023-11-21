@@ -11,12 +11,12 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { actionTypes } from './StepsForm'
-import { flushAllTraces } from 'next/dist/trace'
 
 interface StepsProps {
     key: string;
     index: number;
     handleDelete: (index: number) => void;
+    isLoading: boolean;
     form: UseFormReturn<{
         steps: {
             actionType: string;
@@ -28,12 +28,18 @@ interface StepsProps {
 
 }
 
-const Steps = ({key, index, handleDelete, form}:StepsProps) => {
+const Steps = ({key, index, handleDelete, form, isLoading}:StepsProps) => {
     const [canEdit, setCanEdit] = useState<boolean>(false)
 
     const handleEdit = () => {
         setCanEdit(!canEdit)
     }
+
+    useEffect(() => {
+        if (isLoading) {
+            setCanEdit(false)
+        }
+    }, [isLoading])
   
     return (
     <div key={key} className="flex flex-col space-y-3">

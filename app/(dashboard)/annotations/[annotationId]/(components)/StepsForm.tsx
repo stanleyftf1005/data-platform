@@ -343,7 +343,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             {fields.map(({id}, index) => (
                                 
-                                <Steps index={index} form={form} handleDelete={handleDelete} key={id}/>
+                                <Steps index={index} form={form} handleDelete={handleDelete} key={id} isLoading={isLoading}/>
                             
                             ))}
                             {/*}
