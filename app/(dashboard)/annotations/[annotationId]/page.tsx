@@ -30,6 +30,7 @@ export default async function Page({params}: {params: IParams}) {
             <div className="w-full border-b flex justify-between items-center px-4 py-4 sticky top-0 z-10">
                 <div className="flex space-x-3 items-center">
                     <h3 className="align-middle text-lg font-semibold">{reaction?.rxID}</h3>
+                    <StatusSelect id={reaction?.id} status={reaction?.status}/>
             
                 </div>
                 
