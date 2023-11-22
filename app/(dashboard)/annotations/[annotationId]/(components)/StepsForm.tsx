@@ -195,7 +195,14 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
                 title: "You submitted the following values:",
                 description: (
                     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                        <code className="text-white">{JSON.stringify(res.data, null, 2)}</code>
+                        {/*<code className="text-white">{JSON.stringify(res.data.annotation, null, 2)}</code>*/}
+                        <code className="text-white">
+                            {res.data.annotation.map((line:string, id:string) => {
+                                    return (
+                                        <p className="break-all max-w-[200px]" key={id}>{line + "\n"}</p>
+                                    )
+                                })}
+                        </code>
                     </pre>
                 ),
             })

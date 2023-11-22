@@ -41,8 +41,8 @@ export default async function Page() {
     rawText: data.rawText,
     steps: data.steps as steps[],
     annotation: data.annotation,
-    createdAt: data.createdAt.toISOString(),
-    updatedAt: data.updatedAt.toISOString(),
+    createdAt: data.createdAt.toLocaleString(),
+    updatedAt: data.updatedAt.toLocaleString(),
   }));
  
   

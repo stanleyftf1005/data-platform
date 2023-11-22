@@ -6,6 +6,10 @@ import StepsForm from './(components)/StepsForm';
 import {DialogDemo} from './(components)/DialogDemo';
 import getReactionById from '@/app/actions/getReactionById';
 import LoadingUI from '@/components/LoadingUI';
+import DialogWrapper from './(components)/DialogWrapper';
+import { LuImage, LuTextSelect, LuBadgeHelp } from 'react-icons/lu';
+import Image from 'next/image';
+import ReactionDiagram from '@/public/v100p0404.gif';
 
 interface IParams {
     annotationId: string
@@ -23,6 +27,26 @@ export default async function Page({params}: {params: IParams}) {
         <>
             <div className="w-full border-b flex justify-between items-center px-4 py-4 sticky top-0 z-10">
                 <h3 className="text-lg font-semibold">{reaction?.rxID}</h3>
+                <div className="flex grow justify-end space-x-4">
+                    <DialogWrapper label="Diagram" title="Reaction Diagram" icon={<LuImage className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
+                        <Image src={ReactionDiagram} width={400} height={400} alt="diagram"/>
+                    </DialogWrapper>
+                    <DialogWrapper label="Annotation" title="Annotation" description="This is the latest version of annotation." icon={<LuTextSelect className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
+                        <pre className="mt-2 w-full rounded-md bg-slate-950 p-4">
+                            <code className="text-white">
+                                {reaction?.annotation.map((line) => {
+                                    return (
+                                        line + "\n"
+                                    )
+                                })}
+                            </code>
+                        </pre>
+                    </DialogWrapper>
+                    <DialogWrapper label="Guidelines" icon={<LuBadgeHelp className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>rules</DialogWrapper>
+
+                </div>
+                {/*<div className="w-[100px]"></div>*/}
+
                 
                 
                 
