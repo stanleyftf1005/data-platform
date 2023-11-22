@@ -10,6 +10,8 @@ import DialogWrapper from './(components)/DialogWrapper';
 import { LuImage, LuTextSelect, LuBadgeHelp } from 'react-icons/lu';
 import Image from 'next/image';
 import ReactionDiagram from '@/public/v100p0404.gif';
+import PropTable from '@/public/property-table.png';
+import { StatusSelect } from './(components)/StatusSelect';
 
 interface IParams {
     annotationId: string
@@ -26,7 +28,11 @@ export default async function Page({params}: {params: IParams}) {
     return (
         <>
             <div className="w-full border-b flex justify-between items-center px-4 py-4 sticky top-0 z-10">
-                <h3 className="text-lg font-semibold">{reaction?.rxID}</h3>
+                <div className="flex space-x-3 items-center">
+                    <h3 className="align-middle text-lg font-semibold">{reaction?.rxID}</h3>
+            
+                </div>
+                
                 <div className="flex grow justify-end space-x-4">
                     <DialogWrapper label="Diagram" title="Reaction Diagram" icon={<LuImage className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
                         <Image src={ReactionDiagram} width={400} height={400} alt="diagram"/>
@@ -42,7 +48,9 @@ export default async function Page({params}: {params: IParams}) {
                             </code>
                         </pre>
                     </DialogWrapper>
-                    <DialogWrapper label="Guidelines" icon={<LuBadgeHelp className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>rules</DialogWrapper>
+                    <DialogWrapper label="Guidelines" title="Annotation Guidelines" description="Related properties and variables for annotation."icon={<LuBadgeHelp className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
+                        <Image src={PropTable} width={600} height={600} alt="diagram"/>
+                    </DialogWrapper>
 
                 </div>
                 {/*<div className="w-[100px]"></div>*/}

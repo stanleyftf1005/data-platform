@@ -1,6 +1,6 @@
 "use client"
 import { ColumnDef } from "@tanstack/react-table"
-import {LuMoreHorizontal} from 'react-icons/lu'
+import {LuMoreHorizontal, LuTextSelect} from 'react-icons/lu'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import {
@@ -14,6 +14,8 @@ import {
 import LoadingUI from "@/components/LoadingUI"
 
 import {SafeReaction} from "@/app/types";
+import AnnotationSheet from "@/components/AnnotationSheet"
+import DialogWrapper from "../annotations/[annotationId]/(components)/DialogWrapper"
 
 
 export type steps = {
@@ -103,9 +105,28 @@ export const columns: ColumnDef<SafeReaction>[] = [
       return (
         <Link href={`/annotations/${row.original.id}`}>
           <Button variant="outline" className="text-sm">
-            View Record
+            Edit
           </Button>
         </Link>
+      )
+    },
+  },
+  {
+    id: "annotation",
+    cell: ({ row }) => {
+ 
+      return (
+        <DialogWrapper label="Annotation" title="Annotation" description="This is the latest version of annotation." icon={<LuTextSelect className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
+            <pre className="mt-2 w-full rounded-md bg-slate-950 p-4">
+                <code className="text-white">
+                    {row.original.annotation.map((line) => {
+                        return (
+                            line + "\n"
+                        )
+                    })}
+                </code>
+            </pre>
+        </DialogWrapper>
       )
     },
   },
