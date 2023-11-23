@@ -15,7 +15,7 @@ model Reaction {
   imageURL        String
   rxID            String 
   url             String
-  status          String? @default("Pending")
+  status          String @default("Pending")
   rawText         String
   steps           Json[] @default([])
   annotation      String[] @default([])

@@ -1,12 +1,12 @@
 import {ButtonWithIcon} from '@/components/ButtonWithIcon'
 import { LuDownload } from "react-icons/lu"
-import { Reaction, columns, steps} from './(dataTable)/columns';
+import { Reaction, columns} from './(dataTable)/columns';
 import { DataTable } from './(dataTable)/data-table';
 import { data } from './data';
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {Margin} from "@/components/Margin"
-import prisma from "@/lib/prismadb";
 import {SafeReaction} from "@/app/types";
+import { fetchReaction } from '../actions/fetchReactions';
 
 
 
@@ -14,37 +14,8 @@ import {SafeReaction} from "@/app/types";
 
 export default async function Page() {
 
-  let db_data = undefined;
-
-  try{
-    db_data = await prisma.reaction.findMany({
-      orderBy: [
-        {
-          createdAt: 'desc'
-        }
-      ]
-  })
-  } catch (e) {
-    console.log(e)
-    throw new Error('/ route failed')
-  }
   
-
-  
-
-  const formattedData = db_data?.map((data) => ({
-    id: data.id,
-    imageURL: data.imageURL,
-    rxID: data.rxID,
-    url: data.url,
-    status: data.status,
-    rawText: data.rawText,
-    steps: data.steps as steps[],
-    annotation: data.annotation,
-    createdAt: data.createdAt.toLocaleString(),
-    updatedAt: data.updatedAt.toLocaleString(),
-  }));
- 
+ const formattedData = await fetchReaction()
   
 
   

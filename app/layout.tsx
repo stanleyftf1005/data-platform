@@ -6,7 +6,7 @@ import {cn} from '@/lib/utils'
 import { ClerkProvider } from '@clerk/nextjs'
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from 'next/navigation'
-
+import { fetchReaction } from '../app/actions/fetchReactions'
 
 
 //const inter = Inter({ subsets: ['latin'] })
@@ -27,6 +27,9 @@ export default async function RootLayout({
   if(!(await isAuthenticated())) {
     redirect('/api/auth/login')
   }
+
+  
+  const reaction = await fetchReaction()
   
   return ( 
     
@@ -36,8 +39,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={cn(figtree.className, 'overflow-hidden')}>
         {children}
-        
-        </body>
+      </body>
     </html>
     //</ClerkProvider>
   )

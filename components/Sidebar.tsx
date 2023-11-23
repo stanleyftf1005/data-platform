@@ -1,19 +1,34 @@
-'use client'
+"use client"
 
 import {LuTable2, LuUser2, LuFileEdit,LuSettings} from "react-icons/lu"
 import Sidebarbutton from "./Sidebarbutton"
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { usePathname } from "next/navigation"
 import { UserButton } from "@clerk/nextjs";
 import {RegisterLink, LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import {useKindeBrowserClient} from "@kinde-oss/kinde-auth-nextjs";
 import { Button } from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { SafeReaction } from "@/app/types"
+import { fetchReaction } from "../app/actions/fetchReactions"
+import { Item } from "@radix-ui/react-select"
+import Link from "next/link"
+import SideNavItem from "@/components/SideNavItem"
+//import { reactionContext } from "@/app/layout"
 
 
-export default function Sidebar() {
-  
+interface SidebarProps {
+  reaction?: SafeReaction[] | undefined;
+}
+
+
+export default function Sidebar({reaction}: SidebarProps) {
   const pathname = usePathname()
   const {isAuthenticated} = useKindeBrowserClient();
+
+
+  //const reaction = useContext(reactionContext)
 
   const route = useMemo(() => [
     {
@@ -22,27 +37,30 @@ export default function Sidebar() {
       href: '/',
       active: pathname === '/',
     },
+    /*
     {
       label: 'Annotations',
       icon: LuFileEdit,
       href: '/annotations',
-      active: pathname === '/annotations',
+      active: pathname === '/annotations/',
     },
-    /*{
-      label: 'Settings',
+    {
+      label: 'Settings',s
       path: '/settings',
       icon: LuSettings,
       href: '/settings',
     }*/
   ], [pathname])
+
+
   
   return (
     <>
-      <div className="flex-1 py-2 my-4">
-        <h2 className="mb-6 px-4 text-xl font-semibold tracking-tight">
+      <div className="py-2 my-2">
+        <h2 className="mb-4 px-4 text-xl font-semibold tracking-tight">
           Dashboard
         </h2>
-        <div className="space-y-1.5">
+        <div className="space-y-1">
           {route.map((item) => (
             <Sidebarbutton
               key={item.label}
@@ -53,13 +71,31 @@ export default function Sidebar() {
             />
           
           ))}
-          {/*<Sidebarbutton active label="Dataset" icon={LuTable2}/>
-          <Sidebarbutton label="Annotations" icon={LuFileEdit}/>
-          <Sidebarbutton label="Members" icon={LuUser2}/>
-          <Sidebarbutton label="Settings" icon={LuSettings}/>*/}
         </div>
       </div>
-      <div className="w-full bg-gray-100 rounded-lg mb-4">
+      
+      {pathname !== '/' && (
+        <div className="grow flex flex-col max-h-[74%] border-t pt-3">
+          
+          <h3 className="text-sm text-neutral-500 font-medium mb-2">Annotations</h3>
+          <ScrollArea className="max-h-full">
+            <div className="flex flex-col space-y-2">
+              {reaction?.map((item) => {
+                return (
+                  <SideNavItem item={item} key={item.id}/>
+                  
+                )
+              
+              })}
+            </div>
+          </ScrollArea>
+
+        </div>
+
+      )}
+      
+
+      <div className="w-full bg-gray-100 rounded-lg mt-4">
         
 
         
