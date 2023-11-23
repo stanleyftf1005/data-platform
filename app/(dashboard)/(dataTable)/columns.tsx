@@ -16,6 +16,7 @@ import LoadingUI from "@/components/LoadingUI"
 import {SafeReaction} from "@/app/types";
 import AnnotationSheet from "@/components/AnnotationSheet"
 import DialogWrapper from "../annotations/[annotationId]/(components)/DialogWrapper"
+import { cn } from "@/lib/utils"
 
 
 export type steps = {
@@ -39,6 +40,13 @@ export type Reaction = {
 
 }
 
+export const StatusStyle = {
+  "Pending": "bg-slate-50 border-slate-200 text-slate-500",
+  "Completed": "bg-orange-50 border-orange-200 text-orange-500",
+  "Approved": "bg-lime-50 border-lime-200 text-lime-500",
+  "Rejected": "bg-red-50 border-red-200 text-red-500",
+  "Invalid": "bg-amber-50 border-amber-200 text-amber-500",
+}
 
 
 export const columns: ColumnDef<SafeReaction>[] = [
@@ -46,9 +54,12 @@ export const columns: ColumnDef<SafeReaction>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status:string = row.getValue("status")
+      const status: string = row.getValue("status");
+
+      const styling: { [key: string]: string } = StatusStyle;
+      const statusClass = styling[status as keyof typeof StatusStyle];
  
-      return <div className="py-1 px-3 inline rounded-md font-normal text-sm text-center bg-zinc-200">{status}</div>
+      return <div className={cn("py-1 px-4 inline rounded-xl border font-medium text-sm text-center", statusClass)}>{status}</div>
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id))

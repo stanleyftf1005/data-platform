@@ -26,23 +26,28 @@ import {
   
   export const statuses = [
     {
-      value: "pending",
+      value: "Pending",
       label: "Pending",
       //icon: RxCircle,
     },
     {
-      value: "processed",
-      label: "Processed",
+      value: "Completed",
+      label: "Completed",
       //icon: RxStopwatch,
     },
     {
-      value: "approved",
+      value: "Approved",
       label: "Approved",
       //icon: RxCheckCircled,
     },
     {
-      value: "rejected",
+      value: "Rejected",
       label: "Rejected",
+      //icon: RxCrossCircled,
+    },
+    {
+      value: "Invalid",
+      label: "Invalid",
       //icon: RxCrossCircled,
     },
   ]
