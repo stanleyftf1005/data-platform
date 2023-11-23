@@ -12,7 +12,8 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import axios, { AxiosError, AxiosResponse } from "axios"
 import {useRouter} from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { LuLoader2 } from "react-icons/lu"
 
 
 
@@ -29,11 +30,12 @@ interface StatusSelectProps {
 export function StatusSelect({id, status}: StatusSelectProps) {
 
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   
   const updateStatus = async (fieldStatus: string) => {
     
-    
+    setIsLoading(true)
     await axios.patch(`/api/annotations/${id}/status`, { status: fieldStatus })
     .then((res: AxiosResponse) => {
         toast({
@@ -47,7 +49,7 @@ export function StatusSelect({id, status}: StatusSelectProps) {
                 </pre>
             ),
         })
-        router.refresh()
+        
         
         
     })
@@ -62,13 +64,15 @@ export function StatusSelect({id, status}: StatusSelectProps) {
             )
         })
     })
+    router.refresh()
+    setIsLoading(false)
     
   }
   
   return (
-    <Select defaultValue={status !== undefined || null ? status as string : undefined} onValueChange={(value)=> updateStatus(value)}>
+    <Select disabled={isLoading} defaultValue={status !== undefined || null ? status as string : undefined} onValueChange={(value)=> updateStatus(value)}>
       <SelectTrigger className="w-[150px]">
-        <SelectValue placeholder="Select a status" />
+        <SelectValue placeholder="Select a status" />{isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
