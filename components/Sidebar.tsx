@@ -15,7 +15,12 @@ import { fetchReaction } from "../app/actions/fetchReactions"
 import { Item } from "@radix-ui/react-select"
 import Link from "next/link"
 import SideNavItem from "@/components/SideNavItem"
-//import { reactionContext } from "@/app/layout"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 
 
 interface SidebarProps {
@@ -75,10 +80,11 @@ export default function Sidebar({reaction}: SidebarProps) {
       </div>
       
       {pathname !== '/' && (
-        <div className="grow flex flex-col max-h-[74%] border-t pt-3">
-          
-          <h3 className="text-sm text-neutral-500 font-medium mb-2">Annotations</h3>
+        <div className="grow flex flex-col max-h-[74%] border-t pt-3 overflow-hidden">
+
+          <h3 className="text-sm text-neutral-500 font-medium mb-2">Annotations {`(${reaction?.length})`}</h3>
           <ScrollArea className="max-h-full">
+            
             <div className="flex flex-col space-y-2">
               {reaction?.map((item) => {
                 return (
@@ -88,7 +94,11 @@ export default function Sidebar({reaction}: SidebarProps) {
               
               })}
             </div>
+            
+            
           </ScrollArea>
+          
+          
 
         </div>
 

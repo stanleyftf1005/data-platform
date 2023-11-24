@@ -294,7 +294,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
 
     useEffect(() => {
         
-
+        
         if (fields.length > 0) {
             if(toggle === false){
                 setToggle(true)
@@ -330,7 +330,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
                     </div>
                     
                     <div className="flex space-x-2">
-                        {isDirty && (
+                        {updated && (
                         <Button className="text-sm rounded-xl h-10" type="submit" disabled={isLoading} onClick={()=> externalClick()}>
                             Save Changes {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
                         </Button>)}
@@ -350,7 +350,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                             {fields.map(({id}, index) => (
                                 
-                                <Steps index={index} form={form} handleDelete={handleDelete} key={id} isLoading={isLoading}/>
+                                <Steps index={index} form={form} handleDelete={handleDelete} key={id} isLoading={isLoading} />
                             
                             ))}
                             {/*}

@@ -11,6 +11,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import { actionTypes } from './StepsForm'
+import { register } from 'module'
 
 interface StepsProps {
     key: string;
@@ -65,7 +66,7 @@ const Steps = ({key, index, handleDelete, form, isLoading}:StepsProps) => {
 
             <div className="px-4 py-6 space-y-3">
                 
-                <FormField
+                <Controller
                 control={form.control}
                 name={`steps.${index}.actionType`}
                 render={({ field }) => (
@@ -74,6 +75,8 @@ const Steps = ({key, index, handleDelete, form, isLoading}:StepsProps) => {
                     <Popover>
                         <PopoverTrigger asChild>
                         <FormControl>
+                            
+                            
                             <Button
                             disabled={!canEdit}
                             variant="outline"
@@ -90,6 +93,11 @@ const Steps = ({key, index, handleDelete, form, isLoading}:StepsProps) => {
                                 : "Select Action Type"}
                             <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
+                        
+                            
+                            
+                            
+                            
                         </FormControl>
                         </PopoverTrigger>
                         <PopoverContent className="w-[200px] p-0">
@@ -104,6 +112,7 @@ const Steps = ({key, index, handleDelete, form, isLoading}:StepsProps) => {
                                     key={actionType.value}
                                     onSelect={() => {
                                         form.setValue(`steps.${index}.actionType`, actionType.value)
+
                                     }}
                                     >
                                     <LuCheck
