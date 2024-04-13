@@ -1,5 +1,5 @@
 import { SafeReaction } from '@/app/types';
-import { steps } from './../(dashboard)/(dataTable)/columns';
+import { steps } from "../types";
 import prisma from "@/lib/prismadb";
 
 interface IParams {
