@@ -13,7 +13,6 @@ interface MaterialsListProps {
     // Define your props here
     index: number;
     materialsList: materials[];
-    addMaterial: (index:number, item:steps, e:React.MouseEvent<HTMLButtonElement>) => void;
     form: UseFormReturn<{
         steps: {
             index: number;
@@ -24,7 +23,7 @@ interface MaterialsListProps {
     }, any, undefined>;
 }
 
-const MaterialsList = ({index, materialsList, form, addMaterial} : MaterialsListProps) => {
+const MaterialsList = ({index, materialsList, form} : MaterialsListProps) => {
     // Component logic here
     const [materials, setMaterials] = useState<materials[]>(materialsList);
     const {stepsValue, update} = useContext(FormContext)
