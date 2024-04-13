@@ -1,5 +1,5 @@
 import prisma from "@/lib/prismadb";
-import { steps } from "../(dashboard)/(dataTable)/columns";
+import { steps } from "../types";
 import { SafeReaction } from "../types";
 
 export const fetchReaction = async () => {
