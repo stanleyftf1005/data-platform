@@ -14,16 +14,16 @@ import {
   Form,
 } from "@/components/ui/form"
 import { toast } from "@/components/ui/use-toast"
-import { steps } from '@/app/types';
+import { actionProps, steps } from '@/app/types';
 import { SafeReaction, materials } from '@/app/types';
 import Steps from './Steps';
-
+import { actionTypes } from '../actionTypes';
 
 
 
 const createAnnotationText = (data: steps[]) => {
-
-    return data.map((step) => `(#${step.index}) ${step.actionType} ${step.actionProps} ${step.materials}`) as string[]
+    
+    return data.map((step) => `(#${step.index}) ${step.actionType} ${step.actionProps?.map((actionvars)=>(`[${actionvars.name} ${actionvars.value}]`))}`) as string[]
 }
 
 const createFields = (data:steps[]) => {
@@ -44,8 +44,17 @@ const formSchema = z.object({
             actionType: z.string({
                 required_error: "Properties must be filled in.",
             }),
-            actionProps: z.string({
-            }),
+            actionProps: z.array(
+                z.object({
+                    /*actionType: z.string({
+                        required_error: "Please select an action.",
+                    }),*/
+                    name: z.string().optional(),
+                    value: z.string().optional(),
+                    
+                    
+                })
+            ).optional(),
             materials: z.array(
                 z.object({
                     /*actionType: z.string({
@@ -64,107 +73,12 @@ const formSchema = z.object({
             
         })
 )})
-
-
   
-export const actionTypes = [
-    {
-        value: "Add",
-        label: "Add",
-    },
-    {
-        value: "Combination",
-        label: "Combination",
-    },
-    {
-        value: "Cool",
-        label: "Cool",
-    },
-    {
-        value: "Dilution",
-        label: "Dilution",
-    },
-    {
-        value: "Distill",
-        label: "Distill",
-    },
-    {
-        value: "DrySolid",
-        label: "DrySolid",
-    },
-    {
-        value: "DrySolution",
-        label: "DrySolution",
-    },
-    {
-        value: "Filter",
-        label: "Filter",
-    },
-    {
-        value: "Heat",
-        label: "Heat",
-    },
-    {
-        value: "MakeSolution",
-        label: "MakeSolution",
-    },
-    {
-        value: "Separation",
-        label: "Separation",
-    },
-    {
-        value: "SetPH",
-        label: "SetPH",
-    },
-    {
-        value: "Recrystallize",
-        label: "Recrystallize",
-    },
-    {
-        value: "Reflux",
-        label: "Reflux",
-    },
-    {
-        value: "SetTemperature",
-        label: "SetTemperature",
-    },
-    {
-        value: "Stir",
-        label: "Stir",
-    },
-    {
-        value: "Wait",
-        label: "Wait",
-    },
-    {
-        value: "Wash",
-        label: "Wash",
-    },
-    {
-        value: "Yield",
-        label: "Yield",
-    },
-        
-    
-
-    ]
 
 interface FormContextProps {
     stepsValue: steps[],
     update: UseFieldArrayUpdate<{
-        steps: {
-            index: number;
-            actionType: string;
-            actionProps: string;
-            materials?: {
-                material_name?: string | undefined;
-                quantity?: string | undefined;
-                mole?: string | undefined;
-                volume?: string | undefined;
-                concentration?: string | undefined;
-                production_rate?: string | undefined;
-            }[] | undefined;
-        }[];
+        steps: steps[];
     }, "steps">;
 }
 
@@ -187,10 +101,9 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
         defaultValues: reaction && formSchema.parse({ steps: reaction.steps }) || {
             steps: [
                 {
-                    //actionType: "",
                     index: 1,
                     actionType: "",
-                    actionProps: "",
+                    actionProps: [],
                     materials: [],
                     
                 }
@@ -280,7 +193,7 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
         append({
             index: fields.length+1,
             actionType: "",
-            actionProps: "",
+            actionProps: [],
             materials: [],
         });
     };
@@ -322,12 +235,42 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
         
     }
 
+    const handleAddVariable = (index: number, item:steps) => {
+        var variableList = item.actionProps
+        if(item.actionProps !== undefined || null){
+            variableList = [...variableList as actionProps[], {
+                name: "",
+                value: "",
+                
+            }]
+            update(index, {
+                ...item,
+                actionProps: variableList
+            })
+            
+            
+
+        }else{
+            variableList = [{
+                name: "",
+                value: "",
+            }]
+            update(index, {
+                ...item,
+                actionProps: variableList
+            })
+        }
+        
+        return variableList
+        
+    }
+
     const handleInsert = (e: React.MouseEvent<HTMLButtonElement>, index:number) => {
         e.preventDefault()
         insert(index, {
             index: index,
             actionType: "",
-            actionProps: "",
+            actionProps: [],
             materials: [],
         });
     };
@@ -335,14 +278,17 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
 
 
     const externalClick = () => {
-        onSubmit(form.getValues())
+        const data = form.getValues()
+        onSubmit(data)
+
+        
         
     }
 
     const {isDirty, isSubmitSuccessful} = form.formState
 
 
-    return {form , fields, isLoading, handleDelete,  update, handleInsert, handleAddMaterial, updateFieldIndex, reset, isDirty, isSubmitSuccessful, externalClick, handleAppend, onSubmit}
+    return {form , fields, isLoading, handleDelete,  update, handleInsert, handleAddMaterial, handleAddVariable, updateFieldIndex, reset, isDirty, isSubmitSuccessful, externalClick, handleAppend, onSubmit}
 
 
 }
@@ -362,7 +308,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
         actions: ''}
     ])*/
 
-    const {form, fields, isLoading, isDirty, isSubmitSuccessful, reset, update, handleDelete, handleAppend, handleInsert, handleAddMaterial, updateFieldIndex, externalClick, onSubmit} = useDynamicForm(reaction)
+    const {form, fields, isLoading, isDirty, isSubmitSuccessful, reset, update, handleDelete, handleAppend, handleInsert, handleAddMaterial, handleAddVariable, updateFieldIndex, externalClick, onSubmit} = useDynamicForm(reaction)
 
     const stepsValue = reaction!== undefined ? reaction.steps : [] as steps[]
     
@@ -418,10 +364,10 @@ export default function StepsForm({reaction}: StepsFormProps) {
                     </div>
                     
                     <div className="flex space-x-2">
-                        {updated && (
+                        {updated}
                         <Button className="text-sm rounded-xl h-10" type="submit" disabled={isLoading} onClick={()=> externalClick()}>
                             Save Changes {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
-                        </Button>)}
+                        </Button>
                         <Button variant="outline" className="text-sm rounded-xl h-10" onClick={handleAppend}>
                             <LuPlus className="mr-2 h-4 w-4" /> Add Step
                         </Button>
@@ -439,7 +385,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
                             
                             {fields.map(({id}, index, field) => (
                                 
-                                <Steps index={index} handleDelete={handleDelete} form={form} item={field[index]} key={id} isLoading={isLoading} isEnd={checkEnd(index)} handleAppend={handleAppend} handleInsert={handleInsert} handleAddMaterial={handleAddMaterial}/>
+                                <Steps index={index} handleDelete={handleDelete} form={form} item={field[index]} key={id} isLoading={isLoading} isEnd={checkEnd(index)} handleAppend={handleAppend} handleInsert={handleInsert} handleAddMaterial={handleAddMaterial} handleAddVariable={handleAddVariable}/>
                             
                             ))}
                             {/*}

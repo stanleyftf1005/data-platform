@@ -13,7 +13,6 @@ import ReactionDiagram from '@/public/v100p0404.gif';
 import PropTable from '@/public/property-table.png';
 import { StatusSelect } from './(components)/StatusSelect';
 import ComponentsTable from './(components)/componentsTable';
-
   
 
 interface IParams {
@@ -43,15 +42,17 @@ export default async function Page({params}: {params: IParams}) {
                 </div>
                 
                 <div className="flex grow justify-end space-x-4">
+                    <DialogWrapper label="Reactions" title="Reactions" icon={<LuImage className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
+                        <Image src={path} width={600} height={600} alt="diagram"/>
+                    </DialogWrapper>
+                    
                     {reaction?.components !== undefined &&  reaction?.components.length > 0  ? (
                         <DialogWrapper label="Components" title="Components Table" icon={<LuBoxes className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
                             <ComponentsTable components={reaction?.components}/>
                         </DialogWrapper>
                     ) : null}
                     
-                    <DialogWrapper label="Diagram" title="Reaction Diagram" icon={<LuImage className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
-                        <Image src={path} width={600} height={600} alt="diagram"/>
-                    </DialogWrapper>
+                    
                     <DialogWrapper label="Annotation" title="Annotation" description="This is the latest version of annotation." icon={<LuTextSelect className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
                         <pre className="mt-2 w-full rounded-md bg-slate-950 p-4">
                             <code className="text-white">

@@ -11,7 +11,7 @@ export type SafeReaction = Omit<Reaction, "createdAt" | "updatedAt" |"steps"|"co
 export type steps = {
     index: number,
     actionType: string,
-    actionProps: string,
+    actionProps?: actionProps[],
     materials?: materials[],
 }
 
@@ -24,10 +24,16 @@ export type components = {
 }
 
 export type materials = {
-        material_name?: string;
-        quantity?: string;
-        mole?: string;
-        volume?: string;
-        concentration?: string;
-        production_rate?: string;
+    material_name?: string;
+    quantity?: string;
+    mole?: string;
+    volume?: string;
+    concentration?: string;
+    production_rate?: string;
+}
+
+export type actionProps = {
+    name?: string,
+    value?: string,
+
 }

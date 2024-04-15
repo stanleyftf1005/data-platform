@@ -10,8 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { IconType } from "react-icons";
-import { Icon } from "@radix-ui/react-select";
+
 
 interface DialogWrapperProps {
     children?: React.ReactNode;
@@ -36,7 +35,7 @@ export default function DialogWrapper({
             {label}
         </Button>
       </DialogTrigger>
-      <DialogContent className="md:max-w-[800px]">
+      <DialogContent className="md:max-w-[900px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>

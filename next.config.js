@@ -5,7 +5,7 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'www.orgsyn.org',
                 port: '',
-                pathname: '/content/figures/**',
+                pathname: '/**',
             },
         ],
     },

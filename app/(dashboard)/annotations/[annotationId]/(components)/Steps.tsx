@@ -10,17 +10,17 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
-import { actionTypes } from './StepsForm'
+import { actionTypes } from '../actionTypes'
 import AddStepBtn from './AddStepBtn'
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-  } from "@/components/ui/accordion"
-import { materials, steps } from '@/app/types'
+import { materials, steps, actionProps } from '@/app/types'
 import AddMaterialBtn from './AddMaterialBtn'
 import MaterialsList from './MaterialsList'
+import { SelectValue } from '@radix-ui/react-select'
+import VariablesList from './VariablesList'
+import { FormContext } from './StepsForm'
+
+
+
 
   
 
@@ -33,15 +33,11 @@ interface StepsProps {
     handleAppend: (e: React.MouseEvent<HTMLButtonElement>) => void;
     handleInsert: (e: React.MouseEvent<HTMLButtonElement>, index: number) => void;
     handleAddMaterial: (index: number, item:steps) => materials[];
+    handleAddVariable: (index: number, item:steps) => actionProps[];
     isLoading: boolean;
     isEnd: boolean;
     form: UseFormReturn<{
-        steps: {
-            index: number;
-            actionType: string;
-            actionProps: string;
-            materials?: materials[],
-        }[];
+        steps: steps[];
     }, any, undefined>;
     item: steps,
 
@@ -52,11 +48,35 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
     const [canEdit, setCanEdit] = useState<boolean>(true)
 
     const m: materials[] = (item.materials !== undefined || null) ? item.materials as materials[] : [];
+    const v: actionProps[] = (item.actionProps !== undefined || null) ? item.actionProps as actionProps[] : [];
 
     const [materialsList, setMaterialsList] = useState<materials[]>(m);
+    const [variablesList, setVariablesList] = useState<actionProps[]>(v);
+    
+
+    const findActionTypeObject = (actionTypeValue: string) => {
+        return actionTypes.find(actionType => actionType.value === actionTypeValue);
+    }
+
+    const actionTypeValue = form.watch(`steps.${index}.actionType`)
+
+    
+
+    const [allowVariables, setAllowVariables] = useState<boolean>(false)
+    const [allowMaterials, setAllowMaterials] = useState<boolean>(false)
+
+    //const [allowVariables, setAllowVariables] = useState<boolean>(false)
+
+    const {stepsValue, update} = useContext(FormContext)
 
 
     const addMaterial = (index:number, item:steps, e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        handleAddMaterial(index, item)
+
+    }
+
+    const addVariable = (index:number, item:steps, e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         handleAddMaterial(index, item)
 
@@ -70,7 +90,35 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
         if (isLoading) {
             setCanEdit(false)
         }
-    }, [isLoading])
+
+        //const actionTypeValue = form.getValues(`steps.${index}.actionType`)
+        const actionType = findActionTypeObject(actionTypeValue)
+        
+        if (actionType) {
+            setAllowMaterials(actionType.materials)
+            if(actionType.materials === false){
+                setMaterialsList([])
+            }
+        }
+
+        const maxVars = findActionTypeObject(actionTypeValue)?.actionVars.length
+
+        if (maxVars !== 0) {
+            setAllowVariables(true)
+
+        }else{
+            setAllowVariables(false)
+            setVariablesList([])
+        }
+
+        return () => {
+            setAllowMaterials(!allowMaterials)
+            setAllowVariables(!allowVariables)
+        }
+
+
+
+    }, [isLoading, allowMaterials, actionTypeValue])
   
     return (
     <>
@@ -84,10 +132,11 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                         Step {index+1}
                     </div>
                     <div className="space-x-2 flex">
+                        {/*
                         <Button variant={!canEdit?"ghost":"secondary"} className="px-2" type="button" onClick={(() => handleEdit())}>
                             {!canEdit && <><LuPencil className="h-4 w-4 mx-1.5"/>Edit</>}
                             {canEdit && <><LuCheck className="h-4 w-4 mx-1.5"/>Save</>}
-                        </Button>
+                        </Button>*/}
                         <Button variant="ghost" className="text-neutral-500 p-1" onClick={(() => handleDelete(index))}>
                             <LuTrash2 className="h-4 w-4 mx-1.5" />
                         </Button>
@@ -102,6 +151,7 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                     control={form.control}
                     name={`steps.${index}.actionType`}
                     render={({ field }) => (
+                        
                         <FormItem className="flex flex-col">
                         <FormLabel>Action Type</FormLabel>
                         <Popover>
@@ -113,6 +163,7 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                                 disabled={!canEdit}
                                 variant="outline"
                                 role="combobox"
+                                
                                 className={cn(
                                     "w-[200px] justify-between",
                                     !field.value && "text-muted-foreground"
@@ -144,6 +195,12 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                                         key={actionType.value}
                                         onSelect={() => {
                                             form.setValue(`steps.${index}.actionType`, actionType.value)
+                                            
+                                            //sanity action to remove all deafult values andreset the form input state
+                                            setAllowMaterials(findActionTypeObject(actionType.value)?.materials || false)
+                                            
+                                            //remove all pre-fetch values from the database and set to empty when a new action type is selected
+                                            form.setValue(`steps.${index}.actionProps`, [])
 
                                         }}
                                         >
@@ -170,23 +227,11 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                     )}
                     />
 
-                    <Controller
-                    control={form.control}
-                    name={`steps.${index}.actionProps`}
-                    render={({ field }) => (
-                        
-                        <FormItem>
-                            <FormLabel>Action Variables</FormLabel>
-                            <FormControl>
-                                <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field} disabled={!canEdit} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                        
-                        
-                        
+                    {allowVariables && (
+                        <VariablesList index={index} variablesList={variablesList} form={form} actionTypeValue={actionTypeValue}/>
+
                     )}
-                    />
+                    
                     
 
                     <Controller
@@ -205,161 +250,21 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                         
                     )}
                     />
-                    
-                    <MaterialsList index={index} materialsList={materialsList} form={form}/>
 
                     
-                    {/*(materialsList!==undefined) ? (
-                        materialsList.map((material, material_index) => (
-                            <>  
-                                
-                                <Accordion type="single" collapsible>
-                                    <AccordionItem className="text-sm" value={`$(material_index)`}>
-                                        <AccordionTrigger>{`Material ${material_index+1}`}</AccordionTrigger>
-                                        <AccordionContent className='space-y-3'>
-                                            <Controller
-                                            control={form.control}
-                                            key={material_index}
-                                            name={`steps.${index}.materials.${material_index}.material_name`}
-                                            render={({ field }) => (
-                                                
-                                                
-                                                <FormItem>
-                                                    <FormLabel>Material Name</FormLabel>
-                                                    <FormControl>
-                                                        <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field} disabled={!canEdit} />
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                                
-                                                
-                                                
-                                                
-                                            )}
-                                            />
-    
-                                            <div className="flex w-full align-items-start justify-stretch justify-items-stretch space-x-2">
-                                                <Controller
-                                                control={form.control}
-                                                key={material_index}
-                                                name={`steps.${index}.materials.${material_index}.quantity`}
-                                                render={({ field }) => (
-                                                    
-                                                    
-                                                    <FormItem className='grow'>
-                                                        <FormLabel>Quantity</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                    
-                                                    
-                                                    
-                                                    
-                                                )}
-                                                />
-    
-                                                <Controller 
-                                                control={form.control}
-                                                key={material_index}
-                                                name={`steps.${index}.materials.${material_index}.mole`}
-                                                render={({ field }) => (
-                                                    
-                                                    
-                                                    <FormItem className='grow'>
-                                                        <FormLabel>Mole</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                    
-                                                    
-                                                    
-                                                    
-                                                )}
-                                                />
-                                            </div>
-    
-                                            <div className="flex w-full align-items-start justify-stretch justify-items-stretch space-x-2">
-                                                <Controller 
-                                                control={form.control}
-                                                key={material_index}
-                                                name={`steps.${index}.materials.${material_index}.volume`}
-                                                render={({ field }) => (
-                                                    
-                                                    
-                                                    <FormItem className='grow'>
-                                                        <FormLabel>Volume</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="Enter variables here ..." {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                    
-                                                    
-                                                    
-                                                    
-                                                )}
-                                                />
-    
-                                                <Controller 
-                                                control={form.control}
-                                                key={material_index}
-                                                name={`steps.${index}.materials.${material_index}.concentration`}
-                                                render={({ field }) => (
-                                                    
-                                                    
-                                                    <FormItem className='grow'>
-                                                        <FormLabel>Concentration</FormLabel>
-                                                        <FormControl>
-                                                            <Input placeholder="Enter variables here ..." {...field} />
-                                                        </FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                    
-                                                    
-                                                    
-                                                    
-                                                )}
-                                                />
-                                            </div>
-    
-                                            <Controller 
-                                            control={form.control}
-                                            key={material_index}
-                                            name={`steps.${index}.materials.${material_index}.production_rate`}
-                                            render={({ field }) => (
-                                                
-                                                
-                                                <FormItem>
-                                                    <FormLabel>Production Rate</FormLabel>
-                                                    <FormControl>
-                                                        <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field}/>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                                
-                                                
-                                                
-                                                
-                                            )}
-                                            />
-                                        
-                                        </AccordionContent>
-                                    </AccordionItem>
-                                </Accordion>
-    
-    
-                                
-    
-                            </>
+
+                    
+                    {allowMaterials && (
+                        <div>
                             
-                        ))
+                            <MaterialsList index={index} materialsList={materialsList} form={form}/>
+                        </div>
                         
-            ) : null
-                                            */}
+                    )}
+
+                    
+
+                    
 
                     {/*<AddMaterialBtn index={index} item={item} addMaterial={addMaterial}/>*/}
 

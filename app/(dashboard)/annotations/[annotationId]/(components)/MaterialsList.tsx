@@ -6,6 +6,7 @@ import { PlusCircle } from 'lucide-react'
 import { FormContext } from './StepsForm';
 import { steps } from '@/app/types';
 import { MaterialListItem } from './MaterialListItem';
+import { Separator } from '@/components/ui/separator';
 
 
 
@@ -14,12 +15,7 @@ interface MaterialsListProps {
     index: number;
     materialsList: materials[];
     form: UseFormReturn<{
-        steps: {
-            index: number;
-            actionType: string;
-            actionProps: string;
-            materials?: materials[],
-        }[];
+        steps: steps[];
     }, any, undefined>;
 }
 
@@ -67,6 +63,7 @@ const MaterialsList = ({index, materialsList, form} : MaterialsListProps) => {
 
     return (
         <div className='py-3'>
+            <Separator className='my-6'/>
             {(materials!== undefined || null) ? (
                         materials.map((material, material_index) => (
                             

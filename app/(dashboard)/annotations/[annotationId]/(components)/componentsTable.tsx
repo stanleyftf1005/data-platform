@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/popover"
 import { Button } from '@/components/ui/button';
 import clipboardCopy  from 'clipboard-copy';
+import Image from 'next/image';
 
 interface ComponentsTableProps {
     // define your props here
@@ -28,7 +29,7 @@ const ComponentsTable = ({components}: ComponentsTableProps) => {
     // Q: filter components, only keep the ones if the accuracy is higher than 80%, show me the code
     //
     const filterComponents = (components: components[]) => {
-        return components?.filter((component) => component.confidence > 0.8);
+        return components?.filter((component) => component.confidence > 0.7);
     }
 
     const handleCopy = (text: string) => {
@@ -52,6 +53,7 @@ const ComponentsTable = ({components}: ComponentsTableProps) => {
                         <TableRow className='sticky top-0'>
                             <TableHead>Component Name</TableHead>
                             <TableHead>SMILES</TableHead>
+                            <TableHead>Structure</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -59,7 +61,7 @@ const ComponentsTable = ({components}: ComponentsTableProps) => {
                             {filteredComponents?.map((component, index) => (
                                 
                                 <TableRow key={index}>
-                                    <TableCell className="font-medium">
+                                    <TableCell className="font-medium capitalize">
                                         {component.com_name}
                                         <Popover>
                                             <PopoverTrigger asChild>
@@ -98,7 +100,10 @@ const ComponentsTable = ({components}: ComponentsTableProps) => {
                                                 </div>
                                             </PopoverContent>
                                         </Popover>
-                                        </TableCell>
+                                    </TableCell>
+                                    <TableCell className='min-w-[150px]'>
+                                        <Image src={`https://www.orgsyn.org/httphandlers/substancetooltip.ashx?id=${component.img_id}`} alt={component.com_name} width={150} height={150} />
+                                    </TableCell>
                                 </TableRow>
                             
                             ))}

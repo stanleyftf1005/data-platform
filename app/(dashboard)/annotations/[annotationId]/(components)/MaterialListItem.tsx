@@ -9,9 +9,9 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 import { FormItem, FormControl, FormLabel, FormMessage} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ChevronsUpDown } from 'lucide-react'
-import { FieldArrayWithId } from 'react-hook-form';
 import { materials } from '@/app/types'
 import { useState } from 'react'
+import { steps } from '@/app/types'
 
 
 interface MaterialListItemProps {
@@ -19,12 +19,7 @@ interface MaterialListItemProps {
     material: materials;
     index: number;
     form: UseFormReturn<{
-        steps: {
-            index: number;
-            actionType: string;
-            actionProps: string;
-            materials?: materials[],
-        }[];
+        steps: steps[];
     }, any, undefined>;
     handleDeleteMaterial: (e: React.MouseEvent<HTMLButtonElement>, indexToRemove: number) => void;
     addMaterialStep: (e: React.MouseEvent<HTMLButtonElement>) => void;
