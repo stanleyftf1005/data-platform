@@ -64,6 +64,7 @@ const MaterialsList = ({index, materialsList, form} : MaterialsListProps) => {
     return (
         <div className='py-3'>
             <Separator className='my-6'/>
+            <h1 className='text-sm font-medium mb-6'>Materials</h1>
             {(materials!== undefined || null) ? (
                         materials.map((material, material_index) => (
                             
@@ -74,7 +75,7 @@ const MaterialsList = ({index, materialsList, form} : MaterialsListProps) => {
             }
 
             <div className="flex flex-col justify-items-center mt-6">
-                <Button size="sm" variant="ghost" className="w-full gap-1 place-self-center border" onClick={(e)=>addMaterialStep(e)}>
+                <Button size="sm" variant="secondary" className="w-full gap-1 place-self-center border" onClick={(e)=>addMaterialStep(e)}>
                 
                     <PlusCircle className="h-3.5 w-3.5" />
                     Add Material

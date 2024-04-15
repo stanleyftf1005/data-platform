@@ -9,8 +9,8 @@ import { Controller, UseFormReturn } from 'react-hook-form'
 import { FormItem, FormControl, FormLabel, FormMessage} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ChevronsUpDown } from 'lucide-react'
-import { LuChevronsUpDown, LuCheck } from 'react-icons/lu'
-import { useEffect, useState, useContext } from 'react'
+import { LuChevronsUpDown, LuCheck, LuHelpCircle, LuSettings } from 'react-icons/lu'
+import { useEffect, useState, useContext, use } from 'react'
 import { steps, actionProps } from '@/app/types'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command'
@@ -19,6 +19,12 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { actionTypes } from '../actionTypes'
 import { FormContext } from './StepsForm'
 import { actionVariablesType } from '../actionVariables'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 
 interface VariableListItemProps {
@@ -39,17 +45,30 @@ interface VariableListItemProps {
 
 
 export const VariableListItem = ({variable, variable_index, index, form, handleDeleteVariable, actionTypeValue, addVariableStep}: VariableListItemProps) => {
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState<boolean | undefined>(false)
 
     const actionType = actionTypes.find((actionType) => actionType.value === actionTypeValue) || actionTypes[0]
+
+    const currentActionVariableObj = form.watch(`steps.${index}.actionProps.${variable_index}`) 
+    
+    var comment = actionType?.actionVars?.find(
+        (vars) => vars.name === currentActionVariableObj?.name
+    )?.comment
+    
     
 
     useEffect(() => {
-        console.log(actionTypeValue)
-        console.log(actionType)
+    
+        comment = actionType?.actionVars?.find(
+            (vars) => vars.name === currentActionVariableObj?.name
+        )?.comment
+
         
+
+
     }, [actionTypeValue])
 
+ 
     return (
         <>  
                                 
@@ -60,7 +79,14 @@ export const VariableListItem = ({variable, variable_index, index, form, handleD
                                 >
                                     <div className="flex items-center justify-between p-2 mb-2 rounded-md border ">
                                         <h4 className="text-sm font-semibold">
-                                        {`Action Variable ${variable_index+1}`}
+                                        
+                                        <div className="flex items-center text-sm font-medium">
+                                            <div className="flex-none justify-items-center content-center bg-neutral-100 border-[1.5px] border-neutral-200  text-neutral-700 p-1.5 mr-2 rounded-lg">
+                                                <LuSettings className="h-5 w-5 stroke-[1.5px]"/>
+                                            </div>
+                                            {currentActionVariableObj !== undefined || null ? `${currentActionVariableObj.name}` : `Action Variable (${variable_index+1})`} 
+                                            
+                                        </div>
                                         </h4>
                                         <div className='flex'>
                                             <Button variant="ghost" className="text-neutral-500 p-1 mr-2" onClick={(e)=>handleDeleteVariable(e,variable_index)}>
@@ -76,7 +102,7 @@ export const VariableListItem = ({variable, variable_index, index, form, handleD
                                     
                                     </div>
                                     
-                                    <CollapsibleContent className="space-y-2 px-2 pb-6">
+                                    <CollapsibleContent className="space-y-2 px-2 py-3">
                                         
                                         <div className="flex w-full items-end justify-stretch justify-items-stretch space-x-2">
                                             <Controller
@@ -166,7 +192,24 @@ export const VariableListItem = ({variable, variable_index, index, form, handleD
                                                 
                                                 
                                                 <FormItem className='grow'>
-                                                    <FormLabel>Value</FormLabel>
+                                                    <FormLabel className='flex flex-row mb-3'>
+                                                        <>
+                                                        Value
+                                                        {currentActionVariableObj?.name !== undefined && (
+                                                        <TooltipProvider>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                        <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                    </button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>{comment}</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>)}
+                                                        </>
+                                                    </FormLabel>
                                                     <FormControl>
                                                         <Input placeholder="Enter action variables here" {...field}/>
                                                     </FormControl>

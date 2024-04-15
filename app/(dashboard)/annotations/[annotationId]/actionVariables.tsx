@@ -7,7 +7,7 @@ export const actionVariablesType = {
     "duration": {
         "name": "Duration",
         "description": "The duration of the action",
-        "comment": "Examples: vacuum, nitrogen",
+        "comment": "Examples: 10 h, overnight, 80s",
     },
     "dropwise": {
         "name": "Dropwise",
@@ -37,7 +37,7 @@ export const actionVariablesType = {
     "temperature": {
         "name": "Temperature",
         "description": "The temperature at which the action is performed",
-        "comment": "For convenience, we use “C” to represnet “°C”. Examples: 20 C, 0 C",
+        "comment": "For convenience, we use “C” to represent “°C”. Examples: 20 C, 0 C",
     },
     "proportion": {
         "name": "Proportion",

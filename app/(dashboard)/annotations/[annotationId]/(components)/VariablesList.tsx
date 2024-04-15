@@ -68,7 +68,7 @@ const VariablesList = ({index, variablesList, form, actionTypeValue} : Variables
             }
 
             <div className="flex flex-col justify-items-center mt-6">
-                <Button size="sm" variant="ghost" className="w-full gap-1 place-self-center border" onClick={(e)=>addVariableStep(e)}>
+                <Button size="sm" variant="secondary" className="w-full gap-1 place-self-center border" onClick={(e)=>addVariableStep(e)}>
                 
                     <PlusCircle className="h-3.5 w-3.5" />
                     Add Action Variables

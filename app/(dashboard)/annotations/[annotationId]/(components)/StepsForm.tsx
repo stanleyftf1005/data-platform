@@ -134,14 +134,14 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
                 title: "You submitted the following values:",
                 description: (
                     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-                        {/*<code className="text-white">{JSON.stringify(res.data.annotation, null, 2)}</code>*/}
-                        <code className="text-white">
+                        <code className="text-white">{JSON.stringify(res.data.steps, null, 2)}</code>
+                        {/*<code className="text-white">
                             {res.data.annotation.map((line:string, id:string) => {
                                     return (
                                         <p className="break-all max-w-[200px]" key={id}>{line + "\n"}</p>
                                     )
                                 })}
-                        </code>
+                        </code>*/}
                     </pre>
                 ),
             })
@@ -364,10 +364,10 @@ export default function StepsForm({reaction}: StepsFormProps) {
                     </div>
                     
                     <div className="flex space-x-2">
-                        {updated}
+                        {updated && (
                         <Button className="text-sm rounded-xl h-10" type="submit" disabled={isLoading} onClick={()=> externalClick()}>
                             Save Changes {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
-                        </Button>
+                        </Button>)}
                         <Button variant="outline" className="text-sm rounded-xl h-10" onClick={handleAppend}>
                             <LuPlus className="mr-2 h-4 w-4" /> Add Step
                         </Button>

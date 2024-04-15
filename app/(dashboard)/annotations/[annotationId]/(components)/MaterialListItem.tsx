@@ -1,4 +1,4 @@
-import { LuTrash2 } from 'react-icons/lu'
+import { LuTrash2, LuHelpCircle, LuTestTube } from 'react-icons/lu'
 import {
   Collapsible,
   CollapsibleContent,
@@ -12,6 +12,13 @@ import { ChevronsUpDown } from 'lucide-react'
 import { materials } from '@/app/types'
 import { useState } from 'react'
 import { steps } from '@/app/types'
+import { materialVariables } from '../materialVariables'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 
 interface MaterialListItemProps {
@@ -33,17 +40,26 @@ interface MaterialListItemProps {
 export const MaterialListItem = ({material, material_index, index, form, handleDeleteMaterial, addMaterialStep}: MaterialListItemProps) => {
     const [isOpen, setIsOpen] = useState(false)
 
+    const currentMaterialName = form.watch(`steps.${index}.materials.${material_index}.material_name`) 
+
     return (
         <>  
                                 
                                 <Collapsible
                                 open={isOpen}
                                 onOpenChange={setIsOpen}
-                                className="space-y-2 mb-3"
+                                className="space-y-6 mb-3"
                                 >
                                     <div className="flex items-center justify-between p-2 mb-4 rounded-md border ">
                                         <h4 className="text-sm font-semibold">
-                                        {`Material ${material_index+1}`}
+                                        <div className="flex items-center text-sm font-medium capitalize">
+                                            <div className="flex-none justify-items-center content-center bg-neutral-100 border-[1.5px] border-neutral-200  text-neutral-700 p-1.5 mr-2 rounded-lg">
+                                                <LuTestTube className="h-5 w-5 stroke-[1.5px]"/>
+                                            </div>
+                                            {currentMaterialName !== undefined || "" || null ? `${currentMaterialName}` : `Material ${material_index+1}`} 
+                                            
+                                        </div>
+                                    
                                         </h4>
                                         <div className='flex'>
                                             <Button variant="ghost" className="text-neutral-500 p-1 mr-2" onClick={(e)=>handleDeleteMaterial(e,material_index)}>
@@ -59,7 +75,7 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                     
                                     </div>
                                     
-                                    <CollapsibleContent className="space-y-2 px-2 pb-6">
+                                    <CollapsibleContent className="space-y-6 px-2 pb-6">
                                         <Controller
                                         control={form.control}
                                         key={material_index}
@@ -67,8 +83,13 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                         render={({ field }) => (
                                             
                                             
-                                            <FormItem>
-                                                <FormLabel>Material Name</FormLabel>
+                                            <FormItem className='mb-4'>
+                                                <FormLabel>
+                                                    
+                                                    Material Name
+                                                    
+                                                </FormLabel>
+                                                
                                                 <FormControl>
                                                     <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field} />
                                                 </FormControl>
@@ -80,7 +101,7 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                             
                                         )}
                                         />
-                                        <div className="flex w-full align-items-start justify-stretch justify-items-stretch space-x-2">
+                                        <div className="flex w-full items-end justify-stretch justify-items-stretch space-x-2">
                                             <Controller
                                             control={form.control}
                                             key={material_index}
@@ -89,7 +110,24 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                                 
                                                 
                                                 <FormItem className='grow'>
-                                                    <FormLabel>Quantity</FormLabel>
+                                                    <FormLabel className='flex flex-row mb-3'>
+                                                        <>
+                                                            Quantity
+                                                            
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                            <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                        </button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>{materialVariables.quantity.comment}</p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        </>
+                                                    </FormLabel>
                                                     <FormControl>
                                                         <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field}/>
                                                     </FormControl>
@@ -110,7 +148,28 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                                 
                                                 
                                                 <FormItem className='grow'>
-                                                    <FormLabel>Mole</FormLabel>
+                                                    <FormLabel className='flex flex-row mb-3 contnet-center'>
+                                                        <>
+                                                            Mole
+                                                            
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                            <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                        </button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>
+                                                                            <b>Description:</b> {materialVariables.mole.description}<br/>
+                                                                            <b>Units:</b> {materialVariables.mole.units? materialVariables.mole.units : "---"}<br/>
+                                                                            <b>Comment:</b> {materialVariables.mole.comment}<br/>
+                                                                        </p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        </>
+                                                    </FormLabel>
                                                     <FormControl>
                                                         <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field}/>
                                                     </FormControl>
@@ -123,7 +182,7 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                             )}
                                             />
                                         </div>
-                                        <div className="flex w-full align-items-start justify-stretch justify-items-stretch space-x-2">
+                                        <div className="flex w-full items-end justify-stretch justify-items-stretch space-x-2 mb-3">
                                             <Controller 
                                             control={form.control}
                                             key={material_index}
@@ -132,7 +191,29 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                                 
                                                 
                                                 <FormItem className='grow'>
-                                                    <FormLabel>Volume</FormLabel>
+                                                    <FormLabel className='flex flex-row mb-3 contnet-center'>
+                                                        <>
+                                                            Volume
+                                                            
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                            <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                        </button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>
+                            
+                                                                            <b>Description:</b> {materialVariables.volume.description}<br/>
+                                                                            <b>Units:</b> {materialVariables.volume.units? materialVariables.volume.units : "---"}<br/>
+                                                                            <b>Comment:</b> {materialVariables.volume.comment}<br/>
+                                                                        </p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        </>
+                                                    </FormLabel>
                                                     <FormControl>
                                                         <Input placeholder="Enter variables here ..." {...field}/>
                                                     </FormControl>
@@ -153,7 +234,30 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                                 
                                                 
                                                 <FormItem className='grow'>
-                                                    <FormLabel>Concentration</FormLabel>
+                                                    <FormLabel className='flex flex-row mb-3 contnet-center'>
+                                                        <>
+                                                            Concentration
+                                                            
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                            <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                        </button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>
+                        
+                                                                            <b>Description:</b> {materialVariables.concentration.description}<br/>
+                                                                            <b>Units:</b> {materialVariables.concentration.units? materialVariables.concentration.units : "---"}<br/>
+                                                                            <b>Comment:</b> {materialVariables.concentration.comment}<br/>
+                                                                        </p>
+                                                                        
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        </>
+                                                    </FormLabel>
                                                     <FormControl>
                                                         <Input placeholder="Enter variables here ..." {...field}/>
                                                     </FormControl>
@@ -174,7 +278,28 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                             
                                             
                                             <FormItem>
-                                                <FormLabel>Production Rate</FormLabel>
+                                                <FormLabel className='flex flex-row mb-3 contnet-center'>
+                                                        <>
+                                                            <h2>Production Rate (Product Only)</h2>
+                                                            
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                            <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                        </button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>
+                                                                            <b>Description:</b> {materialVariables.production_rate.description}<br/>
+                                                                            <b>Units:</b> {materialVariables.production_rate.units? materialVariables.production_rate.units : "---"}<br/>
+                                                                            <b>Comment:</b> {materialVariables.production_rate.comment}<br/>
+                                                                        </p>
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        </>
+                                                    </FormLabel>
                                                 <FormControl>
                                                     <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field}/>
                                                 </FormControl>
