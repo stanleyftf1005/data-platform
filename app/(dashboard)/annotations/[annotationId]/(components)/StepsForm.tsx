@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react'
 import { useRouter } from 'next/navigation';
 import axios from 'axios'
 import { AxiosResponse, AxiosError } from 'axios';
-import { LuPlus, LuTrash2, LuCheck, LuChevronsUpDown, LuLoader2 } from "react-icons/lu"
+import { LuPlus, LuTrash2, LuCheck, LuChevronsUpDown, LuLoader2, LuImage } from "react-icons/lu"
 import {Button} from "@/components/ui/button"
 import {CiBeaker1} from 'react-icons/ci'
 import * as z from "zod"
@@ -14,10 +14,13 @@ import {
   Form,
 } from "@/components/ui/form"
 import { toast } from "@/components/ui/use-toast"
-import { actionProps, steps } from '@/app/types';
+import { actionProps, steps, subReactions } from '@/app/types';
 import { SafeReaction, materials } from '@/app/types';
 import Steps from './Steps';
 import { actionTypes } from '../actionTypes';
+import DialogWrapper from './DialogWrapper';
+import Image from 'next/image';
+
 
 
 
@@ -41,6 +44,7 @@ const formSchema = z.object({
                 required_error: "Please select an action.",
             }),*/
             index: z.number(),
+            subreaction_index: z.number().optional(),
             actionType: z.string({
                 required_error: "Properties must be filled in.",
             }),
@@ -80,6 +84,7 @@ interface FormContextProps {
     update: UseFieldArrayUpdate<{
         steps: steps[];
     }, "steps">;
+    subReactionsValue?: subReactions[],
 }
 
 
@@ -179,6 +184,7 @@ const useDynamicForm = (reaction: SafeReaction | undefined) => {
         fields.map((field, index) => {
             form.setValue(`steps.${index}.index`, index+1)
         })
+        
     }
 
     
@@ -311,6 +317,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
     const {form, fields, isLoading, isDirty, isSubmitSuccessful, reset, update, handleDelete, handleAppend, handleInsert, handleAddMaterial, handleAddVariable, updateFieldIndex, externalClick, onSubmit} = useDynamicForm(reaction)
 
     const stepsValue = reaction!== undefined ? reaction.steps : [] as steps[]
+    const subReactionsValue = reaction!== undefined ? reaction.subreactions : [] as subReactions[]
     
    /* const onClick = () => {
         setToggle(!toggle)
@@ -356,7 +363,7 @@ export default function StepsForm({reaction}: StepsFormProps) {
 
 
     return(
-        <FormContext.Provider value={{stepsValue, update}}>  
+        <FormContext.Provider value={{stepsValue, update, subReactionsValue}}>  
             <div className="flex justify-between align-middle mb-6 px-4 py-4 border-b sticky top-0 z-10 bg-white">
                     <div className="flex flex-col max-w-[70%]">
                         <h3 className="text-base font-semibold">Reaction Procedure</h3>
@@ -364,10 +371,12 @@ export default function StepsForm({reaction}: StepsFormProps) {
                     </div>
                     
                     <div className="flex space-x-2">
-                        {updated && (
+                        
+                        {/*updated && ()*/}
                         <Button className="text-sm rounded-xl h-10" type="submit" disabled={isLoading} onClick={()=> externalClick()}>
-                            Save Changes {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
-                        </Button>)}
+                            Save Changes{isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
+                        </Button>
+                        
                         <Button variant="outline" className="text-sm rounded-xl h-10" onClick={handleAppend}>
                             <LuPlus className="mr-2 h-4 w-4" /> Add Step
                         </Button>

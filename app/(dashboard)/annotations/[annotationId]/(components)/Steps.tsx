@@ -18,6 +18,7 @@ import MaterialsList from './MaterialsList'
 import { SelectValue } from '@radix-ui/react-select'
 import VariablesList from './VariablesList'
 import { FormContext } from './StepsForm'
+import SubreactionSelect from './SubreactionSelect'
 
 
 
@@ -67,7 +68,7 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
 
     //const [allowVariables, setAllowVariables] = useState<boolean>(false)
 
-    const {stepsValue, update} = useContext(FormContext)
+    const {stepsValue, update, subReactionsValue} = useContext(FormContext)
 
 
     const addMaterial = (index:number, item:steps, e:React.MouseEvent<HTMLButtonElement>) => {
@@ -130,6 +131,10 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                             <CiBeaker1 className="h-5 w-5 stroke-[1.5px]"/>
                         </div> 
                         Step {index+1}
+                        {subReactionsValue?.length !== 0 && subReactionsValue!== undefined &&(
+                            <SubreactionSelect form={form} index={index} item={item} canEdit={canEdit}/>
+                        )}
+                        
                     </div>
                     <div className="space-x-2 flex">
                         {/*
@@ -194,6 +199,8 @@ const Steps = ({key, index, handleDelete, handleAddStep, form, isLoading, isEnd,
                                         value={actionType.label}
                                         key={actionType.value}
                                         onSelect={() => {
+
+
                                             form.setValue(`steps.${index}.actionType`, actionType.value)
                                             
                                             //sanity action to remove all deafult values andreset the form input state

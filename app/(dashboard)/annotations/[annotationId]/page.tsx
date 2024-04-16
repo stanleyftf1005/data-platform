@@ -13,6 +13,7 @@ import ReactionDiagram from '@/public/v100p0404.gif';
 import PropTable from '@/public/property-table.png';
 import { StatusSelect } from './(components)/StatusSelect';
 import ComponentsTable from './(components)/componentsTable';
+import { ReactionSettings } from './(components)/ReactionSettings';
   
 
 interface IParams {
@@ -22,8 +23,9 @@ interface IParams {
 export default async function Page({params}: {params: IParams}) {
     const reaction = await getReactionById(params);
 
-    console.log(reaction?.steps)
+    //console.log(reaction?.steps)
     console.log(reaction?.rxID)
+    console.log(reaction)
     
     const imagePath = (rxID:string) => {
         return "https://www.orgsyn.org/content/figures/"+rxID+".gif";
@@ -43,7 +45,7 @@ export default async function Page({params}: {params: IParams}) {
                 
                 <div className="flex grow justify-end space-x-4">
                     <DialogWrapper label="Reactions" title="Reactions" icon={<LuImage className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
-                        <Image src={path} width={600} height={600} alt="diagram"/>
+                        <ReactionSettings reaction={reaction}/>
                     </DialogWrapper>
                     
                     {reaction?.components !== undefined &&  reaction?.components.length > 0  ? (

@@ -18,6 +18,7 @@ interface DialogWrapperProps {
     icon?: React.ReactNode;
     title?: string;
     description?: string;
+    variant?: "default" | "link" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined;
 }
 
 export default function DialogWrapper({
@@ -26,11 +27,12 @@ export default function DialogWrapper({
     icon,
     title,
     description,
+    variant,
 }: DialogWrapperProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="rounded-xl">
+        <Button variant={variant? variant: "ghost"} className="rounded-xl">
             {icon}
             {label}
         </Button>

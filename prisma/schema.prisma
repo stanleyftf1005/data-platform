@@ -24,4 +24,5 @@ model Reaction {
   origin          String @default("orgsyn")
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  subreactions    Json[] @default([])
 }

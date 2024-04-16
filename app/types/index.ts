@@ -1,11 +1,12 @@
 import { Reaction } from "@prisma/client";
 
 
-export type SafeReaction = Omit<Reaction, "createdAt" | "updatedAt" |"steps"|"components"> & {
+export type SafeReaction = Omit<Reaction, "createdAt" | "updatedAt" |"steps"|"components"|"subreactions"> & {
     createdAt: string;
     updatedAt: string;
     steps: steps[];
     components: components[];
+    subreactions: subReactions[];
 }
 
 export type steps = {
@@ -13,6 +14,7 @@ export type steps = {
     actionType: string,
     actionProps?: actionProps[],
     materials?: materials[],
+    subreaction_index?: number,
 }
 
 export type components = {
@@ -35,5 +37,11 @@ export type materials = {
 export type actionProps = {
     name?: string,
     value?: string,
+
+}
+
+export type subReactions = {
+    index?: number,
+    rawText?: string,
 
 }
