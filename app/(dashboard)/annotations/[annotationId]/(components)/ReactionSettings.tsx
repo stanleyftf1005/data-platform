@@ -139,7 +139,7 @@ export const ReactionSettings = ({reaction}: ReactionSettingsProps) => {
                 <form  className="" onSubmit={form.handleSubmit(updateReaction)}>
 
                     <div className="grid w-full gap-1.5 space-y-3">
-                        <Label htmlFor="message">Smiles</Label>
+                        <Label>Smiles</Label>
                         <Controller
                         control={form.control}
                         name="smiles"
@@ -152,8 +152,8 @@ export const ReactionSettings = ({reaction}: ReactionSettingsProps) => {
                         />
                         
                     </div>
-                    <>
-                    
+                    <div className='mt-6'>
+                        <Label>Sub-Reactions</Label>
                         {fields.map(({id}, index, field) => (
                             <>
                                 
@@ -162,7 +162,7 @@ export const ReactionSettings = ({reaction}: ReactionSettingsProps) => {
                             
                             
                         ))}
-                    </>
+                    </div>
                     <div className="flex flex-col justify-items-center mt-6">
                         <Button size="sm" variant="secondary" className="w-full gap-1 place-self-center border" onClick={(e)=>handleAddSubReaction(e)}>
                         

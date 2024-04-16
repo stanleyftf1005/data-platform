@@ -7,7 +7,7 @@ import {DialogDemo} from './(components)/DialogDemo';
 import getReactionById from '@/app/actions/getReactionById';
 import LoadingUI from '@/components/LoadingUI';
 import DialogWrapper from './(components)/DialogWrapper';
-import { LuImage, LuTextSelect, LuBadgeHelp, LuBoxes } from 'react-icons/lu';
+import { LuImage, LuTextSelect, LuBadgeHelp, LuBoxes, LuAtom } from 'react-icons/lu';
 import Image from 'next/image';
 import ReactionDiagram from '@/public/v100p0404.gif';
 import PropTable from '@/public/property-table.png';
@@ -44,7 +44,7 @@ export default async function Page({params}: {params: IParams}) {
                 </div>
                 
                 <div className="flex grow justify-end space-x-4">
-                    <DialogWrapper label="Reactions" title="Reactions" icon={<LuImage className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
+                    <DialogWrapper label="Reaction Settings" title="Reaction Settings" icon={<LuAtom className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
                         <ReactionSettings reaction={reaction}/>
                     </DialogWrapper>
                     

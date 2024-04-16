@@ -41,7 +41,7 @@ const SubReactionItem = ({ index, form, handleAddSubReaction, handleRemoveSubRea
 
     return (
         
-        <div className='mt-6'>  
+        <div className='mt-3'>  
                                 
             <Collapsible
             open={isOpen}
