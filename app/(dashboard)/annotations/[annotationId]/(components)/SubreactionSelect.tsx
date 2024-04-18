@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
-import { steps } from '@/app/types'
+import { steps, subReactions } from '@/app/types'
 import { Button } from '@/components/ui/button';
 import { FormContext } from './StepsForm';
 
@@ -26,6 +26,7 @@ const SubreactionSelect = ({ form, index, item, canEdit }: SubreactionSelectProp
     const [subreactionIndex, setSubreactionIndex] = React.useState<number | undefined>(item.subreaction_index) || undefined;
 
     const {subReactionsValue} = useContext(FormContext)
+
 
     return (
         
@@ -72,7 +73,7 @@ const SubreactionSelect = ({ form, index, item, canEdit }: SubreactionSelectProp
                     <Command>
                         <CommandInput placeholder="Search language..." />
                         <ScrollArea className="h-m-[250px]">
-                            <CommandEmpty>No Action found.</CommandEmpty>
+                            <CommandEmpty>No sub-reactions found.</CommandEmpty>
                             <CommandGroup>
                             { subReactionsValue?.map((sub) => (
                                 <CommandItem

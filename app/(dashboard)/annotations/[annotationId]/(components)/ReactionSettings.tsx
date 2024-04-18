@@ -18,6 +18,8 @@ import { useEffect, useState } from "react"
 import { LuLoader2, LuPlusCircle } from "react-icons/lu"
 import { Button } from "@/components/ui/button"
 import SubReactionItem from './SubReactionItem';
+import { Separator } from '@radix-ui/react-dropdown-menu';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 
 interface ReactionSettingsProps {
@@ -115,6 +117,7 @@ export const ReactionSettings = ({reaction}: ReactionSettingsProps) => {
             
             
         })
+        
         .catch((err: AxiosError) => {
             console.error(err);
             toast({
@@ -129,6 +132,7 @@ export const ReactionSettings = ({reaction}: ReactionSettingsProps) => {
         router.refresh()
         setIsLoading(false)
         
+        
     }
 
     
@@ -137,40 +141,43 @@ export const ReactionSettings = ({reaction}: ReactionSettingsProps) => {
             {/* Your component code here */}
             <Form {...form}>
                 <form  className="" onSubmit={form.handleSubmit(updateReaction)}>
-
-                    <div className="grid w-full gap-1.5 space-y-3">
-                        <Label>Smiles</Label>
-                        <Controller
-                        control={form.control}
-                        name="smiles"
-                        render={({ field }) => (
-                        <Textarea
-                            placeholder="Enter reaction SMILES here."
-                            {...field}
-                        />
-                        )}
-                        />
-                        
-                    </div>
-                    <div className='mt-6'>
-                        <Label>Sub-Reactions</Label>
-                        {fields.map(({id}, index, field) => (
-                            <>
-                                
-                                <SubReactionItem index={index} key={index} form={form} handleAddSubReaction={handleAddSubReaction} handleRemoveSubReaction={handleRemoveSubReaction}/>
-                            </>
+                    <ScrollArea className="h-[500px] mt-6 rounded-md border p-4">
+                        <div className="grid w-full gap-1.5 space-y-3 mx-2">
+                            <Label>Smiles</Label>
+                            <Controller
+                            control={form.control}
+                            name="smiles"
+                            render={({ field }) => (
+                            <Textarea
+                                placeholder="Enter reaction SMILES here."
+                                {...field}
+                            />
+                            )}
+                            />
                             
+                        </div>
+                        <Separator className='my-6 mx-2'/>
+                        <div className="mt-6 mx-2">
+                            <Label>Sub-Reactions</Label>
                             
-                        ))}
-                    </div>
-                    <div className="flex flex-col justify-items-center mt-6">
-                        <Button size="sm" variant="secondary" className="w-full gap-1 place-self-center border" onClick={(e)=>handleAddSubReaction(e)}>
-                        
-                            <LuPlusCircle className="h-3.5 w-3.5" />
-                            Add Sub Reaction
-                        </Button>
-                    </div>
-
+                                {fields.map(({id}, index, field) => (
+                                    <>
+                                        
+                                        <SubReactionItem index={index} key={index} form={form} handleAddSubReaction={handleAddSubReaction} handleRemoveSubReaction={handleRemoveSubReaction}/>
+                                    </>
+                                    
+                                    
+                                ))}
+                            
+                        </div>
+                        <div className="flex flex-col justify-items-center mt-6 mx-2">
+                            <Button size="sm" variant="secondary" className="w-full gap-1 place-self-center border" onClick={(e)=>handleAddSubReaction(e)}>
+                            
+                                <LuPlusCircle className="h-3.5 w-3.5" />
+                                Add Sub Reaction
+                            </Button>
+                        </div>
+                    </ScrollArea>
                     
                     <Button type="submit"  className="mt-6" disabled={isLoading} >
                         Save Changes {isLoading && <LuLoader2 className="animate-spin ml-2 h-4 w-4"/>}
