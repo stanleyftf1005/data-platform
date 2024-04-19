@@ -141,6 +141,12 @@ export const actionTypes = [
         materials: true,
         actionVars: [],
     },
+    {
+        value: "Others",
+        label: "Others",
+        materials: false,
+        actionVars: [vars.text, vars.explanation],
+    },
         
     
 

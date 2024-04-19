@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react'
 import { useRouter } from 'next/navigation';
 import axios from 'axios'
 import { AxiosResponse, AxiosError } from 'axios';
-import { LuPlus, LuTrash2, LuCheck, LuChevronsUpDown, LuLoader2, LuImage } from "react-icons/lu"
+import { LuPlus, LuLoader2} from "react-icons/lu"
 import {Button} from "@/components/ui/button"
 import {CiBeaker1} from 'react-icons/ci'
 import * as z from "zod"
@@ -17,9 +17,6 @@ import { toast } from "@/components/ui/use-toast"
 import { actionProps, steps, subReactions } from '@/app/types';
 import { SafeReaction, materials } from '@/app/types';
 import Steps from './Steps';
-import { actionTypes } from '../actionTypes';
-import DialogWrapper from './DialogWrapper';
-import Image from 'next/image';
 
 
 
@@ -70,6 +67,8 @@ const formSchema = z.object({
                     volume: z.string().optional(),
                     concentration: z.string().optional(),
                     production_rate: z.string().optional(),
+                    smiles: z.string().optional(),
+                    role: z.string().optional(),
                     
                     
                 })

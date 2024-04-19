@@ -270,6 +270,8 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                             )}
                                             />
                                         </div>
+                                        <div className="flex w-full items-end justify-stretch justify-items-stretch space-x-2 mb-3">
+                                            
                                         <Controller 
                                         control={form.control}
                                         key={material_index}
@@ -277,10 +279,10 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                         render={({ field }) => (
                                             
                                             
-                                            <FormItem>
+                                            <FormItem className='grow'>
                                                 <FormLabel className='flex flex-row mb-3 contnet-center'>
                                                         <>
-                                                            <h2>Production Rate (Product Only)</h2>
+                                                            <h2>Production Rate</h2>
                                                             
                                                             <TooltipProvider>
                                                                 <Tooltip>
@@ -301,7 +303,7 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                                         </>
                                                     </FormLabel>
                                                 <FormControl>
-                                                    <Input placeholder="Enter variables here such as (Material) [Volume] ..." {...field}/>
+                                                    <Input placeholder="Enter variables here..." {...field}/>
                                                 </FormControl>
                                                 <FormMessage />
                                             </FormItem>
@@ -311,6 +313,93 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                             
                                         )}
                                         />
+                                            <Controller 
+                                            control={form.control}
+                                            key={material_index}
+                                            name={`steps.${index}.materials.${material_index}.role`}
+                                            render={({ field }) => (
+                                                
+                                                
+                                                <FormItem className='grow'>
+                                                    <FormLabel className='flex flex-row mb-3 contnet-center'>
+                                                        <>
+                                                            Role
+                                                            
+                                                            <TooltipProvider>
+                                                                <Tooltip>
+                                                                    <TooltipTrigger asChild>
+                                                                        <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                            <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                        </button>
+                                                                    </TooltipTrigger>
+                                                                    <TooltipContent>
+                                                                        <p>
+                        
+                                                                            <b>Description:</b> {materialVariables.concentration.description}<br/>
+                                                                            <b>Units:</b> {materialVariables.concentration.units? materialVariables.concentration.units : "---"}<br/>
+                                                                            <b>Comment:</b> {materialVariables.concentration.comment}<br/>
+                                                                        </p>
+                                                                        
+                                                                    </TooltipContent>
+                                                                </Tooltip>
+                                                            </TooltipProvider>
+                                                        </>
+                                                    </FormLabel>
+                                                    <FormControl>
+                                                        <Input placeholder="Enter variables here ..." {...field}/>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                                
+                                                
+                                                
+                                                
+                                            )}
+                                            />
+                                        </div>
+                                        <Controller 
+                                        control={form.control}
+                                        key={material_index}
+                                        name={`steps.${index}.materials.${material_index}.smiles`}
+                                        render={({ field }) => (
+                                            
+                                            
+                                            <FormItem className='grow'>
+                                                <FormLabel className='flex flex-row mb-3 contnet-center'>
+                                                    <>
+                                                        SMILES
+                                                        
+                                                        <TooltipProvider>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <button className="text-neutral-500" onClick={(e) => e.preventDefault()}>
+                                                                        <LuHelpCircle className="h-4 w-4 ml-1.5 hover:opacity-75" />
+                                                                    </button>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>
+                        
+                                                                        <b>Description:</b> {materialVariables.volume.description}<br/>
+                                                                        <b>Units:</b> {materialVariables.volume.units? materialVariables.volume.units : "---"}<br/>
+                                                                        <b>Comment:</b> {materialVariables.volume.comment}<br/>
+                                                                    </p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        </TooltipProvider>
+                                                    </>
+                                                </FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Enter variables here ..." {...field}/>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                            
+                                            
+                                            
+                                            
+                                        )}
+                                        />
+                                        
                                     </CollapsibleContent>
                                 </Collapsible>
 

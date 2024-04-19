@@ -32,6 +32,8 @@ export type materials = {
     volume?: string;
     concentration?: string;
     production_rate?: string;
+    smiles?: string;
+    role?: string;
 }
 
 export type actionProps = {

@@ -54,4 +54,15 @@ export const actionVariablesType = {
         "description": "The pH value during the execution of the action",
         "comment": "Examples: 1,2,14",
     },
+    "text": {
+        "name": "Text",
+        "description": "The pH value duriThe   text   that   should   introduce   new action type to describeng the execution of the action",
+        "comment": "",
+    },
+    "explanation": {
+        "name": "Explanation",
+        "description": "The reason why you choose the Others action. ",
+        "comment": "Input your suggestion for the new action type to describe the text with no more than 200 words",
+    },
+    
 }

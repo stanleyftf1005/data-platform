@@ -25,6 +25,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { Textarea } from '@/components/ui/textarea'
 
 
 interface VariableListItemProps {
@@ -104,7 +105,7 @@ export const VariableListItem = ({variable, variable_index, index, form, handleD
                 
                 <CollapsibleContent className="space-y-2 px-2 py-3">
                     
-                    <div className="flex w-full items-end justify-stretch justify-items-stretch space-x-2">
+                    <div className={cn("flex w-full", (actionType?.value === "Others" ? "flex-col space-y-4": "flex-row items-end justify-stretch justify-items-stretch space-x-2"))}>
                         <Controller
                         control={form.control}
                         key={variable_index}
@@ -211,7 +212,14 @@ export const VariableListItem = ({variable, variable_index, index, form, handleD
                                     </>
                                 </FormLabel>
                                 <FormControl>
+                                    {actionType?.value === "Others" ?
+                                    <Textarea placeholder="Enter action variables here" {...field}/>
+
+                                    : 
                                     <Input placeholder="Enter action variables here" {...field}/>
+                                    
+                                    }
+                                    
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
