@@ -83,7 +83,6 @@ export function StatusSelect({id, status}: StatusSelectProps) {
           <SelectItem value="Approved">Approved</SelectItem>
           <SelectItem value="Rejected">Rejected</SelectItem>
           <SelectItem value="Invalid">Invalid</SelectItem>
-          <SelectItem value="Multiple">Multiple</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
