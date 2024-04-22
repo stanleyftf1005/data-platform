@@ -23,7 +23,7 @@ import Steps from './Steps';
 
 const createAnnotationText = (data: steps[]) => {
     
-    return data.map((step) => `(#${step.index}) ${step.actionType} ${step.actionProps?.map((actionvars)=>(`[${actionvars.name} ${actionvars.value}]`))}`) as string[]
+    return data.map((step) => `(#${step.index}) ${step.actionType} ${step.actionProps?.map((actionvars)=>(`[${actionvars.name} ${actionvars.value}]`)).join(" ")} ${step.materials?.map((m)=> `(${m.material_name} ${m.mole? m.mole: ""} ${m.volume? m.volume: ""} ${m.concentration? m.concentration: ""} ${m.quantity? m.quantity: ""})`).filter((m) => m !== "").join("")}`) as string[]
 }
 
 const createFields = (data:steps[]) => {

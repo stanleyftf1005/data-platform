@@ -56,15 +56,22 @@ export default async function Page({params}: {params: IParams}) {
                     
                     
                     <DialogWrapper label="Annotation" title="Annotation" description="This is the latest version of annotation." icon={<LuTextSelect className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
-                        <pre className="mt-2 w-full rounded-md bg-slate-950 p-4">
-                            <code className="text-white">
-                                {reaction?.annotation.map((line) => {
-                                    return (
-                                        line + "\n"
-                                    )
-                                })}
-                            </code>
-                        </pre>
+                        <div className="mt-2 max-w-[850px] rounded-md bg-slate-950 p-4 text-pretty break-words">
+                            {/*<code className="text-white max-w-[800px] text-wrap">*/}
+                                
+                                    {reaction?.annotation.map((line) => {
+                                        return (
+                                            <>
+                                                <h1 className="text-lg text-white text-pretty">
+                                                    {line}
+                                                </h1>
+                                            </>
+                                            
+                                        )
+                                    })}
+                                
+                            {/*</code>*/}
+                        </div>
                     </DialogWrapper>
                     <DialogWrapper label="Guidelines" title="Annotation Guidelines" description="Related properties and variables for annotation."icon={<LuBadgeHelp className="mr-1.5 h-4 w-4 stroke-[2px]"/>}>
                         <Image src={PropTable} width={600} height={600} alt="diagram"/>
