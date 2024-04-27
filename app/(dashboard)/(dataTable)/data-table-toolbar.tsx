@@ -9,7 +9,7 @@ import { DataTableViewOptions } from "./data-table-view-options"
 
 import { priorities, statuses } from "./data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
-import {orgsyn} from "@/dataset/orgsyn.js"
+//import {orgsyn} from "@/dataset/orgsyn.js"
 
 import prisma from "@/lib/prismadb";
 import axios from "axios"
@@ -24,7 +24,7 @@ interface DataTableToolbarProps<TData> {
 
 
 
-
+{/* 
 //helper function to imoort all records to the database manually => called in the add step button below
 const createRecord = async () => {
 
@@ -32,6 +32,7 @@ const createRecord = async () => {
   return
 
 }
+*/}
 
 export function DataTableToolbar<TData>({
   table,

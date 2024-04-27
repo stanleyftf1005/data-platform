@@ -15,25 +15,20 @@ import { fetchReaction } from '../actions/fetchReactions';
 export default async function Page() {
 
   
- let formattedData = await fetchReaction()
-
- //formattedData = formattedData.slice(formattedData.length-Math.floor(formattedData.length/4)+1, formattedData.length)
-
- //console.log(formattedData.length)
+  let reaction = await fetchReaction()
+  
   
 
   
   return (
     <ScrollArea className="h-full">
       <Margin>
-        <DataTable columns={columns} data={formattedData} />
+        <DataTable columns={columns} data={reaction} />
 
       </Margin>
     </ScrollArea>
     
     /*
-    <ScrollArea className="w-full flex flex-col">
-    </ScrollArea>
 
     
 
