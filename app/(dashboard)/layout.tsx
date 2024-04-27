@@ -12,16 +12,41 @@ export default async function Layout({
   children: React.ReactNode
 }) {
 
-  const { isAuthenticated } = getKindeServerSession();
+  const { isAuthenticated, getUser } = getKindeServerSession();
 
   if(!(await isAuthenticated())) {
     redirect('/api/auth/login')
   }
 
-  const reaction = await fetchReaction()
+  //const user = await getUser()
+  const user = {
+    id: "kp_eb0f466699db4c509f42a922c3fdb267"
+  }
 
   
 
+  let reaction = await fetchReaction()
+
+
+  /*
+  if (user) {
+    switch (user.id) {
+      case "kp_50c0c663b26c4bf58dbbd9794a5cbc8c":
+        reaction = reaction.slice(0, Math.floor(length/4)+1)
+
+      case "kp_eb0f466699db4c509f42a922c3fdb267":
+        reaction = reaction.slice(Math.floor(length/4)+1, Math.floor(length/2)+1)
+      
+      case "kp_670c430302e3417592808190fa2678d8":
+        reaction = reaction.slice(Math.floor(length/2)+1, length-Math.floor(length/4)+1)
+
+      case "kp_d6e1e0e0704e4701a288d5f88ee94527":
+        reaction = reaction.slice(length-Math.floor(length/4)+1, length)
+    }
+  }
+  */
+
+  
 
   return (
     <>

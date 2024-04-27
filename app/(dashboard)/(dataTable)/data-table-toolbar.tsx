@@ -75,9 +75,11 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       {/*<DataTableViewOptions table={table} />*/}
+      {/*
       <Button variant="outline" className="text-sm rounded-xl h-10" onClick={createRecord}>
           Add Step
       </Button>
+      */}
     </div>
   )
 }

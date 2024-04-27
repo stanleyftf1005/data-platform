@@ -142,13 +142,14 @@ export const ReactionSettings = ({reaction}: ReactionSettingsProps) => {
             <Form {...form}>
                 <form  className="" onSubmit={form.handleSubmit(updateReaction)}>
                     <ScrollArea className="h-[500px] mt-6 rounded-md border p-4">
-                        <div className="grid w-full gap-1.5 space-y-3 mx-2">
+                        <div className="grid gap-1.5 space-y-3 mx-2">
                             <Label>Smiles</Label>
                             <Controller
                             control={form.control}
                             name="smiles"
                             render={({ field }) => (
                             <Textarea
+                                className='max-w-full'
                                 placeholder="Enter reaction SMILES here."
                                 {...field}
                             />

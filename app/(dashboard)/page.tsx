@@ -15,9 +15,11 @@ import { fetchReaction } from '../actions/fetchReactions';
 export default async function Page() {
 
   
- const formattedData = await fetchReaction()
-  
+ let formattedData = await fetchReaction()
 
+ //formattedData = formattedData.slice(formattedData.length-Math.floor(formattedData.length/4)+1, formattedData.length)
+
+ //console.log(formattedData.length)
   
 
   

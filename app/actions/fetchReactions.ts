@@ -2,8 +2,13 @@ import prisma from "@/lib/prismadb";
 import { steps } from "../types";
 import { SafeReaction } from "../types";
 
+
+
 export const fetchReaction = async () => {
     let db_data = undefined;
+
+
+    
   
     try{
       db_data = await prisma.reaction.findMany({
@@ -12,13 +17,14 @@ export const fetchReaction = async () => {
             createdAt: 'desc'
           }
         ]
-    })
+      })
+      
     } catch (e) {
       console.log(e)
       throw new Error('/ route failed')
     }
     
-  
+    
     
   
     const formattedData = db_data?.map((data) => ({
