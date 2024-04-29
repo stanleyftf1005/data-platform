@@ -335,9 +335,9 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                                                     <TooltipContent>
                                                                         <p>
                         
-                                                                            <b>Description:</b> {materialVariables.concentration.description}<br/>
-                                                                            <b>Units:</b> {materialVariables.concentration.units? materialVariables.concentration.units : "---"}<br/>
-                                                                            <b>Comment:</b> {materialVariables.concentration.comment}<br/>
+                                                                            <b>Description:</b> {materialVariables.role.description}<br/>
+                                                                            <b>Units:</b> {materialVariables.role.units? materialVariables.role.units : "---"}<br/>
+                                                                            <b>Comment:</b> {materialVariables.role.comment}<br/>
                                                                         </p>
                                                                         
                                                                     </TooltipContent>
@@ -379,9 +379,9 @@ export const MaterialListItem = ({material, material_index, index, form, handleD
                                                                 <TooltipContent>
                                                                     <p>
                         
-                                                                        <b>Description:</b> {materialVariables.volume.description}<br/>
-                                                                        <b>Units:</b> {materialVariables.volume.units? materialVariables.volume.units : "---"}<br/>
-                                                                        <b>Comment:</b> {materialVariables.volume.comment}<br/>
+                                                                        <b>Description:</b> {materialVariables.smiles.description}<br/>
+                                                                        <b>Units:</b> {materialVariables.smiles.units? materialVariables.smiles.units : "---"}<br/>
+                                                                        <b>Comment:</b> {materialVariables.smiles.comment}<br/>
                                                                     </p>
                                                                 </TooltipContent>
                                                             </Tooltip>

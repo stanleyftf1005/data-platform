@@ -29,4 +29,16 @@ export const materialVariables = {
         "units": "",
         "comment": "Only for product. Examples: 78.9%, 20.8%",
     },
+    "role": {
+        "name": "Role",
+        "description": "The role of the material in the reaction",
+        "units": "",
+        "comment": "Choose from “Reactant”, “Reagent” and “Product”",
+    },
+    "smiles": {
+        "name": "SMILES",
+        "description": "The SMILES representation of the material",
+        "units": "",
+        "comment": "Example: COc(c1)cccc1C#N",
+    },
 }
