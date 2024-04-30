@@ -23,7 +23,7 @@ const SideNavItem = ({item}: SideNavItemProps) => {
     const isActive = (pathname === navPath)
 
     useEffect(() => {
-        console.log(linkRef.current)
+        
 
         if(isActive && linkRef.current) {
             linkRef.current.scrollIntoView({
